@@ -1,6 +1,9 @@
 module.exports = {
   darkMode: 'class',
   theme: {
+    fontFamily: {
+      sans: ['"Gill Sans"', 'sans-serif'],
+    },
     extend: {
       colors: {
         primary: 'rgb(var(--primary))',

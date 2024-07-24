@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import Layout from './views/Layout.vue';
+import LoginForm from '@/components/LoginForm.vue';
 import useAuth from '@/stores/auth';
 
 const auth = useAuth();
 </script>
 
 <template>
-  <Layout>
-    <RouterView />
-  </Layout>
+  <LoginForm v-if="auth.loggedOut" />
 </template>
-
-<style scoped></style>

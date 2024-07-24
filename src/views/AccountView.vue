@@ -9,7 +9,7 @@ const user = auth.user;
   <div v-if="user.uuid">
     <h1>Hi, {{ user.username }}!</h1>
     <p>Your uuid: {{ user.uuid }}</p>
-    <p>Your uuid: {{ user.email }}</p>
+    <p>Your email: {{ user.email }}</p>
     <p>Your first name: {{ user.firstName }}</p>
     <p>Your last name: {{ user.lastName }}</p>
   </div>

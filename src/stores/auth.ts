@@ -49,22 +49,29 @@ const useAuth = defineStore('auth', {
         this.token = access;
         this.setUser(user);
       } catch (e) {
-        console.error('COULD NOT REFRESH, AUTH REQUIRED', e);
+        // login required
       }
       this.refresh_attempted = true;
     },
 
-    async loginWithCredentials(username: string, password: string) {
+    async login(username: string, password: string) {
       const { access, user } = await loginWithCredentials(username, password);
       this.token = access;
       this.setUser(user);
-      router.push({ name: 'user' });
+
+      const { query } = router.currentRoute.value;
+      query.redirect
+        ? router.push({ path: decodeURIComponent(String(query.redirect)) })
+        : router.push({ name: 'account' });
     },
 
     logout() {
       this.token = undefined;
       clearToken();
-      router.push({ name: 'home' });
+      const route = router.currentRoute.value;
+      if (route.meta.authRequired) {
+        router.push({ name: 'login', query: { redirect: route.fullPath } });
+      }
     },
 
     setUser(user: User | undefined) {

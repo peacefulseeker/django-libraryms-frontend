@@ -1,26 +1,26 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import Book from '@/components/Book.vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import useBooks from '@/stores/books';
 
 const books = useBooks();
 const route = useRoute();
+const router = useRouter();
 
-const book = ref(null);
-const loading = ref(false);
-
-const fetchData = async (id: number) => {
-  book.value = await books.get(id);
+const fetchBook = async (id: number) => {
+  await books.get(id);
 };
-
-watch(() => route.params.id, fetchData, { immediate: true });
+watch(() => route.params.id, fetchBook, { immediate: true });
 </script>
 
 <template>
-  <div v-if="loading" class="loading">Loading...</div>
-  <div v-if="book">
-    <Book :book="book" />
+  <a class="link mb-5" @click="router.back()">
+    <i class="pi pi-arrow-left"></i>
+    Back
+  </a>
+  <div v-if="books.book.id">
+    <Book :book="books.book" />
   </div>
 </template>
 

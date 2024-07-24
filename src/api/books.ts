@@ -1,13 +1,15 @@
 import axios from '@/axios';
 
+import { type Book } from '@/types/Book';
+
 type OrderResponse = {
   orderId: number;
   bookId: number;
-  message: string;
+  detail: string;
 };
 
 type OrderCancelResponse = {
-  message: string;
+  detail: string;
 };
 
 export const getBooks = async () => {
@@ -19,7 +21,7 @@ export const getBooks = async () => {
 export const getBook = async (id: number) => {
   const url = `/api/v1/books/${id}/`;
 
-  return (await axios.get(url)).data as BlockMap;
+  return (await axios.get(url)).data as Book;
 };
 
 export const orderBook = async (id: number) => {

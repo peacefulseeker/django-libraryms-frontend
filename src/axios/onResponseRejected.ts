@@ -1,9 +1,10 @@
-import useAuth from '@/stores/auth';
 import type { AxiosError } from 'axios';
-import responseCaseMiddleware from './responseCaseMiddleware';
-import { useToast } from 'primevue/usetoast';
-import { app } from '@/main';
 import { ToastSeverity } from 'primevue/api';
+
+import useAuth from '@/stores/auth';
+import { app } from '@/main';
+import responseCaseMiddleware from './responseCaseMiddleware';
+import responseCodes from './response_codes';
 
 const onResponseRejected = (error: AxiosError, enableCaseMiddleware: boolean) => {
   const auth = useAuth();
@@ -13,11 +14,10 @@ const onResponseRejected = (error: AxiosError, enableCaseMiddleware: boolean) =>
       error.response.data = responseCaseMiddleware(error.response.data);
     }
 
-    // TODO: move to separate module
-    if (error.response.data.code !== 'token_not_valid') {
+    if (error.response.data.code !== responseCodes.ACCESS_TOKEN_NOT_VALID) {
       app.config.globalProperties.$toast.add({
         severity: ToastSeverity.ERROR,
-        summary: 'Failure',
+        summary: 'Oops',
         detail: error.response.data.detail,
         life: 3000,
       });

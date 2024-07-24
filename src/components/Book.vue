@@ -1,14 +1,38 @@
 <script setup lang="ts">
 import type { Book } from '@/types/book';
+import Card from 'primevue/card';
+import { useRouter } from 'vue-router';
+
 import useBooks from '@/stores/books';
+import useAuth from '@/stores/auth';
+
+defineProps<{
+  book: Book;
+}>();
 
 const books = useBooks();
+const auth = useAuth();
+const router = useRouter();
 
-export interface Props {
-  book: Book;
-}
+const checkAuth = () => {
+  if (auth.loggedOut) {
+    router.push({ name: 'login', query: { redirect: router.currentRoute.value.fullPath } });
+    return false;
+  }
+  return true;
+};
 
-defineProps<Props>();
+const order = (bookId: int) => {
+  if (checkAuth()) {
+    books.order(bookId);
+  }
+};
+
+const orderCancel = (bookId: int) => {
+  if (checkAuth()) {
+    books.orderCancel(bookId);
+  }
+};
 </script>
 
 <template>
@@ -22,16 +46,24 @@ defineProps<Props>();
     <li>Pages: {{ book.pages }}</li>
     <li>Language: {{ book.language }}</li>
     <li>ISBN: {{ book.isbn }}</li>
+    <li>Available: {{ book.isAvailable }}</li>
+    <li v-if="book.isIssued">Term: {{ book.reservationTerm }}</li>
   </ul>
   <button
-    @click="books.order(book.id)"
-    class="mr-2 mt-2 rounded bg-sky-500 p-2 text-white hover:bg-sky-700">
-    Order
+    v-if="books.bookReservable"
+    :disabled="book.maxReservationsReached"
+    @click="order(book.id)"
+    class="transition-background-color mr-2 mt-2 rounded bg-primary-400 p-3 text-white enabled:hover:bg-primary-300 disabled:opacity-75">
+    Reserve
   </button>
+  <span v-if="book.maxReservationsReached && !books.reservedByMember" class="block text-xs"
+    >Maximum reserations reached</span
+  >
   <button
-    @click="books.orderCancel(book.id)"
-    class="mt-2 rounded bg-red-500 p-2 text-white hover:bg-red-700">
-    Cancel Order
+    v-if="books.reservedByMember"
+    @click="orderCancel(book.id)"
+    class="transition-background-color mt-2 rounded bg-red-400 p-3 text-white hover:bg-red-300">
+    Cancel reservation
   </button>
   <br />
 </template>

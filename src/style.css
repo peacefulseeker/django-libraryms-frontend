@@ -2,36 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
-}
+
+/* PRIMARY COLOR THEME */
+/*https://www.tailwindshades.com/
+DEFAULT: '#997A56',
+50: '#EEE8E1',rgb(238,232,225)
+100: '#E7DED4', rgb(231,222,212)
+200: '#D8CABA', rgb(216,202,186)
+300: '#CAB6A0', rgb(202,182,160)
+400: '#BBA286', rgb(187,162,134)
+500: '#AC8E6C', rgb(172,142,108)
+600: '#997A56', rgb(153,122,86)
+700: '#755D42', rgb(117,93,66)
+800: '#51412E', rgb(81,65,46)
+900: '#2D2419', rgb(45,36,25)
+950: '#1B160F' rgb(27, 22, 15)
+*/
 
 :root {
-  --primary-50: 236 253 245;
-  /*rgb(236 253 245);*/
-  --primary-100: 209 250 229;
-  /*rgb(209 250 229);*/
-  --primary-200: 167 243 208;
-  /*rgb(167 243 208);*/
-  --primary-300: 110 231 183;
-  /*rgb(110 231 183);*/
-  --primary-400: 52 211 153;
-  /*rgb(52 211 153);*/
-  --primary-500: 16 185 129;
-  /*rgb(16 185 129);*/
-  --primary-600: 5 150 105;
-  /*rgb(5 150 105);*/
-  --primary-700: 4 120 87;
-  /*rgb(4 120 87);*/
-  --primary-800: 6 95 70;
-  /*rgb(6 95 70);*/
-  --primary-900: 4 78 56;
-  /*rgb(4 78 56);*/
-  --primary-950: 2 44 34;
-  /*rgb(2 44 34);*/
+  --primary-50: 238, 232, 225;
+  /* rgb(238,232,225) */
+  --primary-100: 231, 222, 212;
+  /* rgb(231,222,212) */
+  --primary-200: 216, 202, 186;
+  /* rgb(216,202,186) */
+  --primary-300: 202, 182, 160;
+  /* rgb(202,182,160) */
+  --primary-400: 187, 162, 134;
+  /* rgb(187,162,134) */
+  --primary-500: 172, 142, 108;
+  /* rgb(172,142,108) */
+  --primary-600: 153, 122, 86;
+  /* rgb(153,122,86) */
+  --primary-700: 117, 93, 66;
+  /* rgb(117,93,66) */
+  --primary-800: 81, 65, 46;
+  /* rgb(81,65,46) */
+  --primary-900: 45, 36, 25;
+  /* rgb(45,36,25) */
+  --primary-950: 27, 22, 15;
+  /* rgb(27,22,15) */
+
+
   --surface-0: 255 255 255;
   /*rgb(255 255 255);*/
   --surface-50: 250 250 250;
@@ -101,4 +113,20 @@
     --primary-highlight-hover-opacity: 0.2;
 
   }
+}
+
+
+@layer components {
+  .link {
+    @apply inline-block transition-colors text-primary hover:text-primary-300;
+    cursor: pointer;
+  }
+}
+
+h1 {
+  @apply text-3xl font-bold;
+}
+
+h2 {
+  @apply text-2xl font-bold;
 }

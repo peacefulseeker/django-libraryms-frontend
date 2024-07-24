@@ -1,40 +1,61 @@
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed, onMounted } from 'vue';
+
 import InputText from 'primevue/inputtext';
 import Password from 'primevue/password';
 import Button from 'primevue/button';
 
 import useAuth from '@/stores/auth';
+import { useRoute, useRouter } from 'vue-router';
+
+const username = ref<any>(null);
+const password = ref<any>(null);
+const hasError = ref(false);
 
 const auth = useAuth();
+const route = useRoute();
 const router = useRouter();
 
-const username = ref('');
-const password = ref('');
+const canSubmit = computed(() => username.value && password.value);
 
-const invalidCredentials = computed(() => !(username.value && password.value));
-
-const loginWithCredentials = async () => {
-  await auth.loginWithCredentials(username.value, password.value);
+const login = async () => {
+  try {
+    await auth.login(username.value, password.value);
+  } catch (error) {
+    hasError.value = true;
+  }
 };
 
 const isEmail = computed(() => {
-  return username.value.includes('@');
+  return username.value?.includes('@');
 });
+
+const clearError = () => (hasError.value = false);
+
+// could not it working with refs only
+onMounted(() => document.getElementById('username')?.focus());
 </script>
 
 <template>
-  <form @submit.prevent="loginWithCredentials">
-    <label for="username">Username or Email</label>
+  <form @submit.prevent="login" class="m-auto">
     <InputText
+      id="username"
       :type="isEmail ? 'email' : 'text'"
       v-model="username"
+      placeholder="Username"
       autocomplete="username"
+      :invalid="hasError"
+      @input="clearError"
       class="mb-4" />
-    <label for="password">Pasword</label>
-    <Password v-model="password" autocomplete="password" class="mb-4" :feedback="false" />
-    <Button :disabled="invalidCredentials" label="Submit" type="submit" />
+    <Password
+      v-model="password"
+      autocomplete="password"
+      placeholder="Password"
+      class="mb-4"
+      :feedback="false"
+      @input="clearError"
+      :invalid="hasError" />
+    <Button :disabled="!canSubmit" label="Submit" type="submit" />
   </form>
 </template>
 
@@ -46,6 +67,11 @@ form {
 
   * {
     flex: 1 0 100%;
+  }
+
+  /* how much time it took to style that fucking crap properly. */
+  input[aria-invalid]:focus {
+    box-shadow: none;
   }
 }
 </style>
