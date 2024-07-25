@@ -8,12 +8,25 @@ type OrderResponse = {
   detail: string;
 };
 
+interface BookQueryParams  {
+  query: string | null;
+  available: boolean;
+  reservedByMe: boolean;
+};
+
 type OrderCancelResponse = {
   detail: string;
 };
 
-export const getBooks = async () => {
-  const url = `/api/v1/books/`;
+export const getBooks = async ({query, available, reservedByMe}: BookQueryParams) => {
+  let url = `/api/v1/books/`;
+  if (query) {
+    url += `?q=${query}`;
+  } else if (available) {
+    url += `?available`;
+  } else if (reservedByMe) {
+    url += `?reserved_by_me`;
+  }
 
   return (await axios.get(url)).data as BlockMap;
 };

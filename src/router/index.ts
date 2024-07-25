@@ -12,12 +12,36 @@ import useAuth from '@/stores/auth';
 
 const HomeView = () => import('@/views/HomeView.vue');
 const AccountView = () => import('@/views/AccountView.vue');
-const BookView = () => import('@/views/BookView.vue');
+const ReservationsView = () => import('@/views/Reservations.vue');
 const LoginView = () => import('@/views/LoginView.vue');
+
+const BookView = () => import('@/views/BookView.vue');
+const BooksView = () => import('@/views/BooksView.vue');
 
 const getAuth = () => {
   const auth = useAuth();
   return auth;
+};
+
+const refreshAuthOnDemand = async () => {
+  const auth = getAuth();
+  if (auth.loggedOut && auth.refreshable) {
+    await auth.refreshAuth();
+  }
+  return auth;
+};
+
+const redirectBasedOnAuth = (to: RouteLocationNormalized, auth: ReturnType<typeof getAuth>) => {
+  if (to.meta.authRequired && !auth.loggedIn) {
+    return {
+      path: '/login',
+      query: { redirect: to.fullPath },
+    };
+  } else if (to.name === 'login' && auth.loggedIn) {
+    return {
+      name: 'home'
+    };
+  }
 };
 
 const routes = [
@@ -32,16 +56,32 @@ const routes = [
     component: LoginView,
   },
   {
+    path: '/books',
+    name: 'books',
+    component: BooksView,
+    meta: {
+      showSearchWidget: true,
+    }
+  },
+  {
     path: '/books/:id',
     name: 'book',
     component: BookView,
+    meta: {
+      showSearchWidget: true,
+    }
   },
-
   {
     path: '/account',
     name: 'account',
     meta: { authRequired: true },
     component: AccountView,
+  },
+  {
+    path: '/account/reservations',
+    name: 'reservations',
+    meta: { authRequired: true },
+    component: ReservationsView,
   },
 ];
 
@@ -50,29 +90,13 @@ const router: RouterExtended = createRouter({
   routes,
 } as RouterOptions);
 
-const refreshAuthOnDemand = async () => {
-  const auth = getAuth();
-  if (auth.loggedOut && auth.refreshable) {
-    await auth.refreshAuth();
-  }
-};
 
-const checkRoutePermitted = (to: RouteLocationNormalized) => {
-  const auth = getAuth();
-  if (to.meta.authRequired && !auth.loggedIn) {
-    return {
-      path: '/login',
-      query: { redirect: to.fullPath },
-    };
-  }
-};
-
-router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded) => {
+router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded) => {
   if (!to.name) {
     return { name: 'home' };
   }
-  refreshAuthOnDemand();
-  return checkRoutePermitted(to);
+  const auth = await refreshAuthOnDemand();
+  return redirectBasedOnAuth(to, auth)
 });
 
 export default router;

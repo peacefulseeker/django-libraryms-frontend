@@ -1,27 +1,29 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import Book from '@/components/Book.vue';
-import { useRoute, useRouter } from 'vue-router';
+import { ref, watchEffect, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import useBooks from '@/stores/books';
+import Book from '@/components/SingleBook.vue';
+import Spinner from '@/components/Spinner.vue';
+import GoBack from '@/components/GoBack.vue';
 
 const books = useBooks();
 const route = useRoute();
-const router = useRouter();
+const book = ref(null);
+const loading = ref(true);
 
 const fetchBook = async (id: number) => {
-  await books.get(id);
+  book.value = await books.get(id);
+  loading.value = false;
 };
 watch(() => route.params.id, fetchBook, { immediate: true });
 </script>
 
 <template>
-  <a class="link mb-5" @click="router.back()">
-    <i class="pi pi-arrow-left"></i>
-    Back
-  </a>
-  <div v-if="books.book.id">
-    <Book :book="books.book" />
-  </div>
+  <main>
+    <GoBack />
+    <Spinner v-if="loading" />
+    <Book v-else :book="book" />
+  </main>
 </template>
 
 <style scoped></style>

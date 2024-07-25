@@ -1,9 +1,29 @@
 <script setup lang="ts">
-import useAuth from '@/stores/auth';
-import Books from '@/components/Books.vue';
+import { ref, watchEffect } from 'vue';
 
-const auth = useAuth();
+import useBooks, { State } from '@/stores/books';
+import HomeBanner from '@/components/HomeBanner.vue';
+import BookList from '@/components/BookList.vue';
+import Spinner from '@/components/Spinner.vue';
+
+const books = ref([]);
+const loading = ref(true);
+
+watchEffect(async () => {
+  books.value = await useBooks().listAvailable();
+  loading.value = false;
+});
 </script>
+
 <template>
-  <Books />
+  <HomeBanner />
+  <main>
+    <div class="text-center">
+      <Spinner v-if="loading" />
+      <div v-else>
+        <h2 class="mb-10">New books for reservation</h2>
+        <BookList :books="books" />
+      </div>
+    </div>
+  </main>
 </template>

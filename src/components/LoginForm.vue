@@ -59,19 +59,14 @@ onMounted(() => document.getElementById('username')?.focus());
   </form>
 </template>
 
-<style>
+<style scoped>
 form {
-  max-width: 400px;
+  width: 400px;
   display: flex;
   flex-direction: column;
 
   * {
     flex: 1 0 100%;
-  }
-
-  /* how much time it took to style that fucking crap properly. */
-  input[aria-invalid]:focus {
-    box-shadow: none;
   }
 }
 </style>

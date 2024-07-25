@@ -5,6 +5,8 @@ interface Publisher {
 interface Author {
   firstName: string;
   lastName: string;
+  yearOfBirth: number;
+  yearOfDeath: number;
 }
 
 interface Reservation {
@@ -21,9 +23,12 @@ export interface Book {
   language: string;
   isbn: string;
   pages: number;
+  pagesDescription: string;
   isAvailable: boolean;
   isIssued: boolean;
+  isReserved: boolean;
   isIssuedToMember: boolean;
+  isQueuedByMember: boolean;
   isReservedByMember: boolean;
   reservationTerm: Date | null;
   maxReservationsReached: bool;

@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+#app {
+  position: relative;
+  min-height: 100vh;
+}
 
 /* PRIMARY COLOR THEME */
 /*https://www.tailwindshades.com/
@@ -120,6 +124,10 @@ DEFAULT: '#997A56',
   .link {
     @apply inline-block transition-colors text-primary hover:text-primary-300;
     cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
@@ -129,4 +137,8 @@ h1 {
 
 h2 {
   @apply text-2xl font-bold;
+}
+
+main {
+  @apply container py-20 mx-auto;
 }
