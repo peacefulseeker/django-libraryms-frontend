@@ -18,7 +18,7 @@ const onResponseRejected = (error: AxiosError, enableCaseMiddleware: boolean) =>
       app.config.globalProperties.$toast.add({
         severity: ToastSeverity.ERROR,
         summary: 'Oops',
-        detail: error.response.data.detail,
+        detail: error.response.data.detail || 'Something went wrong',
         life: 3000,
       });
     }
