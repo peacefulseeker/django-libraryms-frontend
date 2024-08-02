@@ -5,10 +5,9 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "run-p check:type build-only",
+        "build": "vite build",
         "preview": "vite preview",
         "test:unit": "vitest",
-        "build-only": "vite build",
         "check:type": "vue-tsc --project tsconfig.app.json",
         "check:lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore  --max-warnings=0",
         "check:format": "prettier --check .",
