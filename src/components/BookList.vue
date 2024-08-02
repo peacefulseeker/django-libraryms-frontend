@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Book } from '@/types/Book';
-import BookCover from './BookCover.vue';
+  import type { Book } from '@/types/books';
+  import BookCover from './BookCover.vue';
 
-defineProps<{ books: Book[] }>();
+  defineProps<{ books: Book[] }>();
 </script>
 
 <template>
@@ -18,17 +18,17 @@ defineProps<{ books: Book[] }>();
 </template>
 
 <style scoped>
-.book-item {
-  width: 140px;
+  .book-item {
+    width: 140px;
 
-  &:hover .book-cover {
-    &.no-cover {
-      background-color: rgb(var(--primary-400));
-    }
+    &:hover .book-cover {
+      &.no-cover {
+        background-color: rgb(var(--primary-400));
+      }
 
-    &.has-cover {
-      opacity: 0.8;
+      &.has-cover {
+        opacity: 0.8;
+      }
     }
   }
-}
 </style>

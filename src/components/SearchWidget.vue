@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import router from '@/router';
-import Button from 'primevue/button';
-import InputText from 'primevue/inputtext';
-import { ref } from 'vue';
-import { useRoute } from 'vue-router';
-const route = useRoute();
+  import router from '@/router';
+  import Button from 'primevue/button';
+  import InputText from 'primevue/inputtext';
+  import { ref } from 'vue';
+  import { useRoute } from 'vue-router';
+  const route = useRoute();
 
-const search = ref(route.query.q);
+  const search = ref(route.query.q);
 
-const searchBooks = () => {
-  if (route.name !== 'books') {
-    router.push({ name: 'books', query: { q: search.value } });
-  } else {
-    router.push({ query: { q: search.value } });
-  }
-};
+  const searchBooks = () => {
+    if (route.name !== 'books') {
+      router.push({ name: 'books', query: { q: search.value } });
+    } else {
+      router.push({ query: { q: search.value } });
+    }
+  };
 
-const vFocus = {
-  mounted: (el: HTMLInputElement) => {
-    el.focus();
-  },
-};
+  const vFocus = {
+    mounted: (el: HTMLInputElement) => {
+      el.focus();
+    },
+  };
 </script>
 <template>
   <form @submit.prevent="searchBooks" class="search-form flex items-stretch">

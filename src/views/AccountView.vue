@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import Banner from '@/components/Banner.vue';
-import useAuth from '@/stores/auth';
-import Button from 'primevue/button';
-import { useRouter } from 'vue-router';
+  import Banner from '@/components/HeroBanner.vue';
+  import useAuth from '@/stores/auth';
+  import Button from 'primevue/button';
+  import { useRouter } from 'vue-router';
 
-const auth = useAuth();
-const user = auth.user;
-const router = useRouter();
+  const auth = useAuth();
+  const user = auth.user;
+  const router = useRouter();
 </script>
 
 <template>

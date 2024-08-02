@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+  import { useRouter } from 'vue-router';
 
-const router = useRouter();
+  const router = useRouter();
 
-const goBack = () => {
-  router.back() || router.push({ name: 'books' });
-};
+  const goBack = () => {
+    router.back() || router.push({ name: 'books' });
+  };
 </script>
 
 <template>

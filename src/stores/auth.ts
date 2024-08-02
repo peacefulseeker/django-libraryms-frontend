@@ -1,21 +1,13 @@
 import { defineStore } from 'pinia';
-import type { AuthToken } from '@/types/auth';
-import { loginWithCredentials, clearToken, refreshAuth } from '@/api/auth';
-import { computed } from 'vue';
-import router from '@/router';
 
-interface User {
-  uuid: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-}
+import router from '@/router';
+import type { User } from '@/types/auth';
+import { loginWithCredentials, clearToken, refreshAuth } from '@/api/auth';
 
 type AuthStoreState = {
-  token: AuthToken | undefined;
+  token: string | undefined;
   refresh_attempted: boolean;
-  user: User | undefined;
+  user: User;
 };
 
 const useAuth = defineStore('auth', {
@@ -32,13 +24,13 @@ const useAuth = defineStore('auth', {
     };
   },
   getters: {
-    refreshable(state) {
+    refreshable(state: AuthStoreState) {
       return !state.refresh_attempted;
     },
-    loggedIn(state) {
+    loggedIn(state: AuthStoreState) {
       return state.token !== undefined;
     },
-    loggedOut(state) {
+    loggedOut(state: AuthStoreState) {
       return !state.loggedIn;
     },
   },

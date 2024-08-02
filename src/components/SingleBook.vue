@@ -1,40 +1,40 @@
 <script setup lang="ts">
-import type { Book } from '@/types/book';
-import { useRouter } from 'vue-router';
+  import type { Book } from '@/types/books';
+  import { useRouter } from 'vue-router';
 
-import useBooks from '@/stores/books';
-import useAuth from '@/stores/auth';
-import BookCover from './BookCover.vue';
-import BookIcon from './icons/BookIcon.vue';
-import CancelButton from './buttons/CancelButton.vue';
+  import useBooks from '@/stores/books';
+  import useAuth from '@/stores/auth';
+  import BookCover from './BookCover.vue';
+  import BookIcon from './icons/BookIcon.vue';
+  import CancelButton from './buttons/CancelButton.vue';
 
-defineProps<{
-  book: Book;
-}>();
+  defineProps<{
+    book: Book;
+  }>();
 
-const books = useBooks();
-const auth = useAuth();
-const router = useRouter();
+  const books = useBooks();
+  const auth = useAuth();
+  const router = useRouter();
 
-const checkAuth = () => {
-  if (auth.loggedOut) {
-    router.push({ name: 'login', query: { redirect: router.currentRoute.value.fullPath } });
-    return false;
-  }
-  return true;
-};
+  const checkAuth = () => {
+    if (auth.loggedOut) {
+      router.push({ name: 'login', query: { redirect: router.currentRoute.value.fullPath } });
+      return false;
+    }
+    return true;
+  };
 
-const order = (bookId: int) => {
-  if (checkAuth()) {
-    books.order(bookId);
-  }
-};
+  const order = (bookId: int) => {
+    if (checkAuth()) {
+      books.order(bookId);
+    }
+  };
 
-const orderCancel = (bookId: int) => {
-  if (checkAuth()) {
-    books.orderCancel(bookId);
-  }
-};
+  const orderCancel = (bookId: int) => {
+    if (checkAuth()) {
+      books.orderCancel(bookId);
+    }
+  };
 </script>
 
 <template>
@@ -110,20 +110,20 @@ const orderCancel = (bookId: int) => {
 </template>
 
 <style scoped>
-table {
-  td {
-    padding: 5px 15px;
+  table {
+    td {
+      padding: 5px 15px;
+    }
+    tr:nth-of-type(odd) {
+      background-color: rgb(var(--surface-200));
+    }
   }
-  tr:nth-of-type(odd) {
-    background-color: rgb(var(--surface-200));
+
+  aside {
+    width: 220px;
   }
-}
 
-aside {
-  width: 220px;
-}
-
-.book-cover {
-  height: 300px;
-}
+  .book-cover {
+    height: 300px;
+  }
 </style>

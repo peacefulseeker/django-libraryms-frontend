@@ -5,10 +5,7 @@ const onRequestFulfilled = (request: InternalAxiosRequestConfig) => {
   const auth = useAuth();
 
   if (auth.token) {
-    request.headers = {
-      ...request.headers,
-      Authorization: `Bearer ${auth.token}`,
-    };
+    request.headers['Authorization'] = `Bearer ${auth.token}`;
   }
 
   return request;

@@ -47,7 +47,6 @@ DEFAULT: '#997A56',
   --primary-950: 27, 22, 15;
   /* rgb(27,22,15) */
 
-
   --surface-0: 255 255 255;
   /*rgb(255 255 255);*/
   --surface-50: 250 250 250;
@@ -115,14 +114,12 @@ DEFAULT: '#997A56',
     --primary-highlight-opacity: 0.1;
     --primary-highlight-inverse: var(--surface-0);
     --primary-highlight-hover-opacity: 0.2;
-
   }
 }
 
-
 @layer components {
   .link {
-    @apply inline-block transition-colors text-primary hover:text-primary-300;
+    @apply inline-block text-primary transition-colors hover:text-primary-300;
     cursor: pointer;
 
     &:hover {
@@ -140,5 +137,5 @@ h2 {
 }
 
 main {
-  @apply container py-20 mx-auto;
+  @apply container mx-auto py-20;
 }

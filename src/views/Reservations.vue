@@ -1,22 +1,20 @@
 <script setup lang="ts">
-import { ref, watchEffect, watch } from 'vue';
-import { useRoute } from 'vue-router';
+  import { ref, watch } from 'vue';
 
-import useBooks from '@/stores/books';
-import BookList from '@/components/BookList.vue';
-import Spinner from '@/components/Spinner.vue';
-import Banner from '@/components/Banner.vue';
-import router from '@/router';
+  import useBooks from '@/stores/books';
+  import BookList from '@/components/BookList.vue';
+  import Spinner from '@/components/Spinner.vue';
+  import Banner from '@/components/HeroBanner.vue';
+  import router from '@/router';
 
-const loading = ref(true);
-const books = ref([]);
-const route = useRoute();
+  const loading = ref(true);
+  const books = ref([]);
 
-const fetchReservedBooks = async () => {
-  books.value = await useBooks().listReservedByMember();
-  loading.value = false;
-};
-watch(() => null, fetchReservedBooks, { immediate: true });
+  const fetchReservedBooks = async () => {
+    books.value = await useBooks().listReservedByMember();
+    loading.value = false;
+  };
+  watch(() => null, fetchReservedBooks, { immediate: true });
 </script>
 
 <template>

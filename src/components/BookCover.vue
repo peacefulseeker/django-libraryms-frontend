@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import BookIcon from './icons/BookIcon.vue';
+  import BookIcon from './icons/BookIcon.vue';
 
-defineProps<{
-  imageSrc: string | null;
-}>();
+  defineProps<{
+    imageSrc: string | null;
+  }>();
 </script>
 
 <template>
@@ -25,22 +25,22 @@ defineProps<{
 </template>
 
 <style scoped>
-.book-cover {
-  min-height: 200px;
-  background-size: 100% 100%;
-  background-color: rgb(var(--primary-500));
-  position: relative;
+  .book-cover {
+    min-height: 200px;
+    background-size: 100% 100%;
+    background-color: rgb(var(--primary-500));
+    position: relative;
 
-  &.no-cover {
-    &::before {
-      content: '';
-      display: block;
-      background-color: white;
-      height: 100%;
-      width: 2px;
-      position: absolute;
-      left: 2px;
+    &.no-cover {
+      &::before {
+        content: '';
+        display: block;
+        background-color: white;
+        height: 100%;
+        width: 2px;
+        position: absolute;
+        left: 2px;
+      }
     }
   }
-}
 </style>

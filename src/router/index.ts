@@ -3,9 +3,7 @@ import {
   createWebHistory,
   type RouteLocationNormalized,
   type RouteLocationNormalizedLoaded,
-  type NavigationGuardNext,
   type RouterOptions,
-  type Router,
 } from 'vue-router';
 
 import useAuth from '@/stores/auth';
@@ -39,7 +37,7 @@ const redirectBasedOnAuth = (to: RouteLocationNormalized, auth: ReturnType<typeo
     };
   } else if (to.name === 'login' && auth.loggedIn) {
     return {
-      name: 'home'
+      name: 'home',
     };
   }
 };
@@ -61,7 +59,7 @@ const routes = [
     component: BooksView,
     meta: {
       showSearchWidget: true,
-    }
+    },
   },
   {
     path: '/books/:id',
@@ -69,7 +67,7 @@ const routes = [
     component: BookView,
     meta: {
       showSearchWidget: true,
-    }
+    },
   },
   {
     path: '/account',
@@ -90,13 +88,12 @@ const router: RouterExtended = createRouter({
   routes,
 } as RouterOptions);
 
-
-router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded) => {
+router.beforeEach(async (to: RouteLocationNormalized, _from: RouteLocationNormalizedLoaded) => {
   if (!to.name) {
     return { name: 'home' };
   }
   const auth = await refreshAuthOnDemand();
-  return redirectBasedOnAuth(to, auth)
+  return redirectBasedOnAuth(to, auth);
 });
 
 export default router;

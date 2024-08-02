@@ -1,10 +1,11 @@
 /// <reference types="vitest" />
-import { fileURLToPath, URL } from 'node:url';
-
 import { defineConfig } from 'vite';
+import { fileURLToPath, URL } from 'node:url';
+// import checker from 'vite-plugin-checker';
 import vue from '@vitejs/plugin-vue';
 
-const dockerPort = 7004;
+
+// const dockerPort = 7004;
 const localPort = 7070;
 // https://vitejs.dev/config/
 const viteConfig = defineConfig({
@@ -12,10 +13,13 @@ const viteConfig = defineConfig({
     host: true,
     port: 6060,
     proxy: {
-      '/api': `http://127.0.0.1:${dockerPort}`,
+      '/api': `http://127.0.0.1:${localPort}`,
     },
   },
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    // checker({ vueTsc: true  }),
+  ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

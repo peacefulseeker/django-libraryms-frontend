@@ -1,22 +1,20 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
-import { useRoute } from 'vue-router';
+  import { ref, watchEffect } from 'vue';
+  import { useRoute } from 'vue-router';
 
-import useBooks from '@/stores/books';
+  import useBooks from '@/stores/books';
 
-import Banner from '@/components/Banner.vue';
-import BookList from '@/components/BookList.vue';
-import LoginForm from '@/components/LoginForm.vue';
-import Spinner from '@/components/Spinner.vue';
+  import BookList from '@/components/BookList.vue';
+  import Spinner from '@/components/Spinner.vue';
 
-const loading = ref(true);
-const books = ref([]);
-const route = useRoute();
+  const loading = ref(true);
+  const books = ref([]);
+  const route = useRoute();
 
-watchEffect(async () => {
-  books.value = await useBooks().search(route.query.q);
-  loading.value = false;
-});
+  watchEffect(async () => {
+    books.value = await useBooks().search(route.query.q);
+    loading.value = false;
+  });
 </script>
 
 <template>

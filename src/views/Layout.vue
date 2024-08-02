@@ -1,33 +1,33 @@
 <script setup lang="ts">
-import Toast from 'primevue/toast';
-import Menu from 'primevue/menu';
+  import Toast from 'primevue/toast';
+  import Menu from 'primevue/menu';
 
-import useAuth from '@/stores/auth';
-import SearchWidget from '@/components/SearchWidget.vue';
-import { ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+  import useAuth from '@/stores/auth';
+  import SearchWidget from '@/components/SearchWidget.vue';
+  import { ref } from 'vue';
+  import { useRoute, useRouter } from 'vue-router';
 
-const route = useRoute();
-const router = useRouter();
-const auth = useAuth();
-const accountMenu = ref(null);
-const accountMenuItems = ref([
-  {
-    label: 'Account',
-    command: () => router.push({ name: 'account' }),
-  },
-  {
-    label: 'Reservations',
-    command: () => router.push({ name: 'reservations' }),
-  },
-  {
-    label: 'Logout',
-    command: () => auth.logout(),
-  },
-]);
-const toggleAccountMenu = (event: MouseEvent) => {
-  accountMenu.value.toggle(event);
-};
+  const route = useRoute();
+  const router = useRouter();
+  const auth = useAuth();
+  const accountMenu = ref(null);
+  const accountMenuItems = ref([
+    {
+      label: 'Account',
+      command: () => router.push({ name: 'account' }),
+    },
+    {
+      label: 'Reservations',
+      command: () => router.push({ name: 'reservations' }),
+    },
+    {
+      label: 'Logout',
+      command: () => auth.logout(),
+    },
+  ]);
+  const toggleAccountMenu = (event: MouseEvent) => {
+    accountMenu.value.toggle(event);
+  };
 </script>
 
 <template>

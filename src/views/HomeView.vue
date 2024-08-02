@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
+  import { ref, watchEffect } from 'vue';
 
-import useBooks, { State } from '@/stores/books';
-import HomeBanner from '@/components/HomeBanner.vue';
-import BookList from '@/components/BookList.vue';
-import Spinner from '@/components/Spinner.vue';
+  import useBooks from '@/stores/books';
+  import HomeBanner from '@/components/HomeBanner.vue';
+  import BookList from '@/components/BookList.vue';
+  import Spinner from '@/components/Spinner.vue';
 
-const books = ref([]);
-const loading = ref(true);
+  const books = ref([]);
+  const loading = ref(true);
 
-watchEffect(async () => {
-  books.value = await useBooks().listAvailable();
-  loading.value = false;
-});
+  watchEffect(async () => {
+    books.value = await useBooks().listAvailable();
+    loading.value = false;
+  });
 </script>
 
 <template>

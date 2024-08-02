@@ -1,6 +1,6 @@
 import axios from '@/axios';
 
-import { type Book } from '@/types/Book';
+import { type Book } from '@/types/books';
 
 type OrderResponse = {
   orderId: number;
@@ -8,17 +8,17 @@ type OrderResponse = {
   detail: string;
 };
 
-interface BookQueryParams  {
+interface BookQueryParams {
   query: string | null;
   available: boolean;
   reservedByMe: boolean;
-};
+}
 
 type OrderCancelResponse = {
   detail: string;
 };
 
-export const getBooks = async ({query, available, reservedByMe}: BookQueryParams) => {
+export const getBooks = async ({ query, available, reservedByMe }: BookQueryParams) => {
   let url = `/api/v1/books/`;
   if (query) {
     url += `?q=${query}`;
@@ -28,7 +28,7 @@ export const getBooks = async ({query, available, reservedByMe}: BookQueryParams
     url += `?reserved_by_me`;
   }
 
-  return (await axios.get(url)).data as BlockMap;
+  return (await axios.get(url)).data as Book[];
 };
 
 export const getBook = async (id: number) => {

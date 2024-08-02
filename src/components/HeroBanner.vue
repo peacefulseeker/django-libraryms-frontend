@@ -7,11 +7,11 @@
 </template>
 
 <style>
-.banner {
-  background-image: url('/banner.jpeg');
-  background-size: cover;
-  background-position: center;
-  min-height: 240px;
-  width: 100%;
-}
+  .banner {
+    background-image: url('/banner.jpeg');
+    background-size: cover;
+    background-position: center;
+    min-height: 240px;
+    width: 100%;
+  }
 </style>

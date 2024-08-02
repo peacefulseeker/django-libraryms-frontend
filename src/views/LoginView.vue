@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Banner from '@/components/Banner.vue';
-import LoginForm from '@/components/LoginForm.vue';
-import useAuth from '@/stores/auth';
+  import Banner from '@/components/HeroBanner.vue';
+  import LoginForm from '@/components/LoginForm.vue';
+  import useAuth from '@/stores/auth';
 
-const auth = useAuth();
+  const auth = useAuth();
 </script>
 
 <template #banner>

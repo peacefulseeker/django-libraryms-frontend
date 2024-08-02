@@ -9,10 +9,10 @@ interface Author {
   yearOfDeath: number;
 }
 
-interface Reservation {
-  status: string;
-  term: Date;
-}
+// interface Reservation {
+//   status: string;
+//   term: Date;
+// }
 
 export interface Book {
   id: number;
@@ -31,6 +31,6 @@ export interface Book {
   isQueuedByMember: boolean;
   isReservedByMember: boolean;
   reservationTerm: Date | null;
-  maxReservationsReached: bool;
+  maxReservationsReached: boolean;
   coverImageUrl: string;
 }

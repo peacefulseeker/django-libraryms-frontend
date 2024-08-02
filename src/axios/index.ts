@@ -1,6 +1,5 @@
 import axios, { AxiosError, type AxiosResponse } from 'axios';
 
-import useAuth from '@/stores/auth';
 import onResponseFulfilled from '@/axios/onResponseFulfilled';
 import onResponseRejected from '@/axios/onResponseRejected';
 import onRequestFulfilled from '@/axios/onRequestFulfilled';

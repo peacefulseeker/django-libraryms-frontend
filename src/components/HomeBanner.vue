@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Banner from '@/components/Banner.vue';
-import SearchWidget from '@/components/SearchWidget.vue';
+  import Banner from '@/components/HeroBanner.vue';
+  import SearchWidget from '@/components/SearchWidget.vue';
 </script>
 
 <template>

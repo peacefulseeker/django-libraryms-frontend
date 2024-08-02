@@ -1,27 +1,28 @@
 import axios from '@/axios';
-import type { AuthToken } from '@/types/auth';
+import type { User } from '@/types/auth';
 
-type LoginResponse = {
-  access: AuthToken;
+type AuthenticatedResponse = {
+  access: string | undefined;
+  user: User;
 };
 
 export const refreshAuth = async () => {
   const url = `/api/v1/auth/token/refresh/`;
 
-  return (await axios.post(url)).data as LoginResponse;
+  return (await axios.post(url)).data as AuthenticatedResponse;
 };
 
 export const loginWithCredentials = async (
   username: string,
   password: string,
-): Promise<LoginResponse> => {
+): Promise<AuthenticatedResponse> => {
   const url = `/api/v1/auth/token/`;
   const data = {
     username,
     password,
   };
 
-  return (await axios.post(url, data)).data as LoginResponse;
+  return (await axios.post(url, data)).data as AuthenticatedResponse;
 };
 
 export const clearToken = async () => {
