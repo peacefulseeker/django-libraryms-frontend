@@ -1,10 +1,5 @@
 import axios from '@/axios';
-import type { User } from '@/types/auth';
-
-type AuthenticatedResponse = {
-  access: string | undefined;
-  user: User;
-};
+import type { AuthenticatedResponse } from '@/types/auth';
 
 export const refreshAuth = async () => {
   const url = `/api/v1/auth/token/refresh/`;

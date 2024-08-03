@@ -5,3 +5,8 @@ export interface User {
   lastName: string | null;
   email: string;
 }
+
+export type AuthenticatedResponse = {
+  access: string;
+  user: User;
+};

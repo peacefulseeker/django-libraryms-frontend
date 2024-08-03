@@ -23,7 +23,7 @@ const viteConfig = defineConfig({
     },
   },
   experimental: {
-    renderBuiltUrl(filename, { hostId, hostType, type }) {
+    renderBuiltUrl(filename) {
         return '/static/' + filename
     },
   }

@@ -10,7 +10,7 @@ import router from './router';
 import './style.css';
 import 'primeicons/primeicons.css';
 
-export const app = createApp(App);
+export const app = createApp(App, window.__rootProps);
 
 const pinia = createPinia();
 
