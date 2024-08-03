@@ -4,21 +4,24 @@
   import InputText from 'primevue/inputtext';
   import Password from 'primevue/password';
   import Button from 'primevue/button';
-
+  import Spinner from './Spinner.vue';
   import useAuth from '@/stores/auth';
-
   const username = ref<any>(null);
   const password = ref<any>(null);
   const hasError = ref(false);
+  const loading = ref(false);
 
   const canSubmit = computed(() => username.value && password.value);
 
   const login = async () => {
     try {
+      loading.value = true;
       const auth = useAuth();
       await auth.login(username.value, password.value);
+      loading.value = false;
     } catch (error) {
       hasError.value = true;
+      loading.value = false;
     }
   };
 
@@ -33,7 +36,7 @@
 </script>
 
 <template>
-  <form @submit.prevent="login" class="m-auto">
+  <form @submit.prevent="login" class="relative m-auto">
     <InputText
       id="username"
       :type="isEmail ? 'email' : 'text'"
@@ -41,6 +44,7 @@
       placeholder="Username"
       autocomplete="username"
       :invalid="hasError"
+      :disabled="loading"
       @input="clearError"
       class="mb-4" />
     <Password
@@ -50,8 +54,10 @@
       class="mb-4"
       :feedback="false"
       @input="clearError"
-      :invalid="hasError" />
-    <Button :disabled="!canSubmit" label="Submit" type="submit" />
+      :invalid="hasError"
+      :disabled="loading" />
+    <Button :disabled="!canSubmit || loading" label="Submit" type="submit" />
+    <Spinner v-if="loading" class="absolute h-full w-full" />
   </form>
 </template>
 
