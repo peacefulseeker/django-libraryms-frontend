@@ -9,11 +9,11 @@
   <body>
     <div hidden>{{ props|json_script:"app-props" }}</div>
     <script>
-        window.__rootProps = {}
-        try {
-            window.__rootProps = JSON.parse(document.getElementById('app-props').textContent);
-        } catch (error) {
-        }
+      try {
+          window.__rootProps = JSON.parse(document.getElementById('app-props').textContent);
+      } catch (error) {
+          window.__rootProps = {};
+      }
     </script>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
