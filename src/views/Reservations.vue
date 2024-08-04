@@ -5,10 +5,11 @@
   import BookList from '@/components/BookList.vue';
   import Spinner from '@/components/Spinner.vue';
   import Banner from '@/components/HeroBanner.vue';
-  import router from '@/router';
+  import { useRouter } from 'vue-router';
 
   const loading = ref(true);
   const books = ref([]);
+  const router = useRouter();
 
   const fetchReservedBooks = async () => {
     books.value = await useBooks().listReservedByMember();
@@ -27,6 +28,6 @@
       No reservations, check out books:
       <a href="" @click.prevent="router.push({ name: 'books' })" class="link">here</a>
     </h2>
-    <BookList class="!justify-start" :books="books" />
+    <BookList :books="books" />
   </main>
 </template>

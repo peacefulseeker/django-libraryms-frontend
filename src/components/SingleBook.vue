@@ -38,8 +38,8 @@
 </script>
 
 <template>
-  <div class="flex">
-    <aside class="mr-10">
+  <div class="flex flex-wrap max-md:justify-center max-sm:text-center">
+    <aside class="max-sm:mb-8 sm:mr-10">
       <BookCover class="mb-4" :imageSrc="book.coverImageUrl">
         <template #icon>
           <BookIcon style="font-size: 25px; opacity: 0.8" />

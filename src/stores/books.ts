@@ -1,7 +1,6 @@
-import { useToast } from 'primevue/usetoast';
 import { ToastSeverity } from 'primevue/api';
 import { defineStore } from 'pinia';
-import type Toast from 'primevue/toast';
+
 import type { Book } from '@/types/books';
 import { getBooks, getBook, orderBook, cancelBookOrder } from '@/api/books';
 
@@ -10,13 +9,11 @@ export interface State {
   available: Book[];
   reserved: Book[];
   book: Book;
-  toast: Toast;
 }
 
 const useBooks = defineStore('books', {
   state: (): State => {
     return {
-      toast: useToast(),
       items: [],
       available: [],
       reserved: [],
@@ -40,7 +37,7 @@ const useBooks = defineStore('books', {
 
   actions: {
     addToast(detail: string, severity: ToastSeverity = ToastSeverity.SUCCESS) {
-      this.toast.add({
+      window.$toast.add({
         severity,
         detail: detail,
         life: 3000,

@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia';
 
+import { ToastSeverity } from 'primevue/api';
+
 import router from '@/router';
 import type { User } from '@/types/auth';
 import { loginWithCredentials, clearToken, refreshAuth } from '@/api/auth';
@@ -35,6 +37,14 @@ const useAuth = defineStore('auth', {
     },
   },
   actions: {
+    addToast(detail: string, severity: ToastSeverity = ToastSeverity.SUCCESS) {
+      window.$toast.add({
+        severity,
+        detail: detail,
+        life: 3000,
+      });
+    },
+
     async refreshAuth() {
       try {
         const { access, user } = await refreshAuth();
@@ -55,6 +65,8 @@ const useAuth = defineStore('auth', {
       query.redirect
         ? router.push({ path: decodeURIComponent(String(query.redirect)) })
         : router.push({ name: 'account' });
+
+      this.addToast('Login successful');
     },
 
     logout() {
@@ -64,6 +76,8 @@ const useAuth = defineStore('auth', {
       if (route.meta.authRequired) {
         router.push({ name: 'login', query: { redirect: route.fullPath } });
       }
+
+      this.addToast('Logout successful');
     },
 
     setUser(user: User | undefined) {

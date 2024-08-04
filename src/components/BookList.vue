@@ -6,7 +6,9 @@
 </script>
 
 <template>
-  <ul class="m-auto flex flex-wrap justify-center md:w-2/3" style="gap: 30px">
+  <ul
+    class="justify-space-around m-auto flex flex-wrap max-md:justify-center md:w-2/3"
+    style="gap: 20px">
     <li v-for="book in books" :key="book.id" class="book-item">
       <RouterLink class="w-full" :to="{ name: 'book', params: { id: book.id } }">
         <BookCover :imageSrc="book.coverImageUrl" />

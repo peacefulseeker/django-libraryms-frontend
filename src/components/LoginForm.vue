@@ -36,7 +36,7 @@
 </script>
 
 <template>
-  <form @submit.prevent="login" class="relative m-auto">
+  <form @submit.prevent="login" class="relative m-auto flex w-96 flex-col max-sm:w-56">
     <InputText
       id="username"
       :type="isEmail ? 'email' : 'text'"
@@ -63,10 +63,6 @@
 
 <style scoped>
   form {
-    width: 400px;
-    display: flex;
-    flex-direction: column;
-
     * {
       flex: 1 0 100%;
     }

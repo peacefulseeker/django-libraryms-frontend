@@ -1,17 +1,11 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="banner flex items-center justify-center max-sm:hidden">
+  <div
+    class="with-bg-gradient banner flex w-full items-center justify-center px-5"
+    style="min-height: 240px">
     <slot />
   </div>
 </template>
 
-<style>
-  .banner {
-    background-image: url('/banner.jpeg');
-    background-size: cover;
-    background-position: center;
-    min-height: 240px;
-    width: 100%;
-  }
-</style>
+<style></style>

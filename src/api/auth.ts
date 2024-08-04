@@ -20,7 +20,7 @@ export const loginWithCredentials = async (
   return (await axios.post(url, data)).data as AuthenticatedResponse;
 };
 
-export const clearToken = async () => {
+export const clearToken = async (): void => {
   const url = `/api/v1/auth/token/`;
   await axios.delete(url);
 };

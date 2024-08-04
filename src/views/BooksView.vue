@@ -21,12 +21,12 @@
   <main>
     <Spinner v-if="loading" />
     <div v-else>
-      <h2 class="my-10">
+      <h2 class="my-10 max-md:text-center">
         <span v-if="books.length">Books found </span>
         <span v-else>No books found </span>
         <span v-if="route.query.q">for "{{ route.query.q }}" query</span>
       </h2>
-      <BookList class="!justify-start md:w-full" :books="books" />
+      <BookList class="md:w-full" :books="books" />
     </div>
   </main>
 </template>

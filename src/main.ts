@@ -22,4 +22,6 @@ app.use(PrimeVue, {
   pt: LaraCustom,
 });
 
+window.$toast = app.config.globalProperties.$toast;
+
 app.mount('#app');

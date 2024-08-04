@@ -27,10 +27,8 @@
     <InputText
       v-model="search"
       v-focus
-      minlength="3"
-      style="width: 400px"
       size="large"
-      class="w-60 rounded-br-none rounded-tr-none invalid:hover:border-primary invalid:focus:ring-0"
+      class="w-96 rounded-br-none rounded-tr-none invalid:hover:border-primary invalid:focus:ring-0 max-md:w-56"
       placeholder="Book title or author" />
     <Button class="rounded-bl-none rounded-tl-none" type="submit">
       <i class="pi pi-search"></i>

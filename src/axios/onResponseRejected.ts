@@ -1,7 +1,6 @@
 import type { AxiosError } from 'axios';
 import { ToastSeverity } from 'primevue/api';
 
-import { app } from '@/main';
 import responseCaseMiddleware from './responseCaseMiddleware';
 import responseCodes from './response_codes';
 
@@ -12,7 +11,7 @@ const onResponseRejected = (error: AxiosError, enableCaseMiddleware: boolean): P
     }
 
     if (error.response.data.code !== responseCodes.ACCESS_TOKEN_NOT_VALID) {
-      app.config.globalProperties.$toast.add({
+      window.$toast.add({
         severity: ToastSeverity.ERROR,
         summary: 'Oops',
         detail: error.response.data.detail || 'Something went wrong',
