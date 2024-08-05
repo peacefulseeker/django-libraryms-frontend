@@ -1,11 +1,8 @@
 <script setup lang="ts">
-  import Toast from 'primevue/toast';
-  import { useToast } from 'primevue/usetoast';
   import Menu from 'primevue/menu';
-
   import useAuth from '@/stores/auth';
   import SearchWidget from '@/components/SearchWidget.vue';
-  import { ref, onMounted, onUnmounted } from 'vue';
+  import { ref } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
 
   const route = useRoute();
@@ -13,25 +10,10 @@
   const auth = useAuth();
   const accountMenu = ref(null);
   const menuIconToggled = ref(false);
-  const toast = useToast();
-
-  const handleKeyUp = (e) => {
-    if (e.key === 'Escape') {
-      toast.removeAllGroups();
-    }
-  };
 
   const toggleIcon = () => {
     menuIconToggled.value = !menuIconToggled.value;
   };
-
-  onMounted(() => {
-    document.addEventListener('keyup', handleKeyUp);
-  });
-
-  onUnmounted(() => {
-    document.removeEventListener('keyup', handleKeyUp);
-  });
 
   const accountMenuItems = ref([
     {
@@ -53,8 +35,6 @@
 </script>
 
 <template>
-  <Toast class="max-md:w-56" />
-
   <header class="bg-primary-600 py-4">
     <nav class="container mx-auto px-4">
       <ul class="flex items-center text-white">
