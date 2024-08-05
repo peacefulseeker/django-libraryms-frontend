@@ -26,7 +26,7 @@
 
 <style scoped>
   .book-cover {
-    min-height: 200px;
+    min-height: 220px;
     background-size: 100% 100%;
     background-color: rgb(var(--primary-500));
     position: relative;

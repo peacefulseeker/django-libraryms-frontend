@@ -55,18 +55,18 @@
       </div>
 
       <button
-        v-if="books.bookReservable"
+        v-if="books.reservable"
         :disabled="book.maxReservationsReached"
         @click="order(book.id)"
         class="transition-background-color mr-2 mt-2 rounded bg-primary-400 p-3 text-white enabled:hover:bg-primary-300 disabled:opacity-75">
-        <span v-if="!book.isAvailable">Queue up</span>
+        <span v-if="books.queuable">Queue up</span>
         <span v-else>Reserve</span>
       </button>
-      <span v-if="book.maxReservationsReached && !books.reservedByMember" class="block text-xs">
+      <span v-if="book.maxReservationsReached && !book.isReservedByMember" class="block text-xs">
         Maximum reserations reached
       </span>
       <CancelButton
-        v-if="books.reservedByMember || books.queuedByMember"
+        v-if="book.isReservedByMember || book.isQueuedByMember"
         @click="orderCancel(book.id)">
         Cancel reservation
       </CancelButton>

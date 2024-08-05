@@ -9,6 +9,11 @@ export interface State {
   available: Book[];
   reserved: Book[];
   book: Book;
+
+  reservedByAnyone: () => boolean;
+  reservable: () => boolean;
+  bookedByMember: () => boolean;
+  queuable: () => boolean;
 }
 
 const useBooks = defineStore('books', {
@@ -22,17 +27,21 @@ const useBooks = defineStore('books', {
   },
 
   getters: {
-    reservedByMember(state: State) {
-      return state.book.isReservedByMember || state.book.isIssuedToMember;
+    reservedByAnyone(state: State) {
+      return !state.book.isAvailable;
     },
 
-    queuedByMember(state: State) {
-      return state.book.isQueuedByMember;
+    bookedByMember(state: State) {
+      return state.book.isReservedByMember || state.book.isQueuedByMember || state.book.isIssuedToMember;
     },
 
-    bookReservable(state: State) {
-      return !state.reservedByMember && !state.queuedByMember;
+    reservable(state: State) {
+      return !state.book.isReservedByMember && !state.book.isQueuedByMember && !state.book.isIssuedToMember;
     },
+
+    queuable(): boolean {
+      return this.reservedByAnyone && this.reservable;
+    }
   },
 
   actions: {
@@ -81,8 +90,9 @@ const useBooks = defineStore('books', {
         this.book.isQueuedByMember = true;
       } else {
         this.book.isReserved = true;
+        this.book.isReservedByMember = true;
       }
-      this.book.isReservedByMember = true;
+      this.book.isAvailable = false;
       this.addToast(detail);
     },
 

@@ -9,11 +9,6 @@ interface Author {
   yearOfDeath: number;
 }
 
-// interface Reservation {
-//   status: string;
-//   term: Date;
-// }
-
 export interface Book {
   id: number;
   title: string;
@@ -33,4 +28,15 @@ export interface Book {
   reservationTerm: Date | null;
   maxReservationsReached: boolean;
   coverImageUrl: string;
+}
+
+export interface BookReserved {
+  id: number;
+  title: string;
+  author: Author;
+  pages: string;
+  reservationTerm: Date;
+  coverImageUrl: string;
+  isAvailable: string;
+  isIssued: string;
 }
