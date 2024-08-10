@@ -24,10 +24,12 @@
   </Banner>
   <main>
     <Spinner v-if="loading" />
-    <h2 v-if="!books.length">
-      No reservations, check out books:
-      <a href="" @click.prevent="router.push({ name: 'books' })" class="link">here</a>
-    </h2>
-    <BookList :books="books" :showTerm="true" />
+    <div v-else>
+      <h2 v-if="!books.length">
+        No reservations, check out books:
+        <a href="" @click.prevent="router.push({ name: 'books' })" class="link">here</a>
+      </h2>
+      <BookList :books="books" :showTerm="true" />
+    </div>
   </main>
 </template>

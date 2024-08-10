@@ -7,6 +7,8 @@
   import BookCover from './BookCover.vue';
   import BookIcon from './icons/BookIcon.vue';
   import CancelButton from './buttons/CancelButton.vue';
+  import { useToast } from 'primevue/usetoast';
+  import { ToastSeverity } from 'primevue/api';
 
   defineProps<{
     book: Book;
@@ -15,9 +17,11 @@
   const books = useBooks();
   const auth = useAuth();
   const router = useRouter();
+  const toast = useToast();
 
   const checkAuth = () => {
     if (auth.loggedOut) {
+      toast.add({ severity: ToastSeverity.WARN, detail: 'Please, login first' });
       router.push({ name: 'login', query: { redirect: router.currentRoute.value.fullPath } });
       return false;
     }
