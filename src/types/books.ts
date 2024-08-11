@@ -36,6 +36,7 @@ export interface BookReserved {
   author: Author;
   pages: string;
   reservationTerm: Date;
+  reservationId: number;
   coverImageUrl: string;
   isAvailable: string;
   isIssued: string;

@@ -29,7 +29,7 @@
         No reservations, check out books:
         <a href="" @click.prevent="router.push({ name: 'books' })" class="link">here</a>
       </h2>
-      <BookList :books="books" :showTerm="true" />
+      <BookList :books="books" :showTerm="true" :showReservationId="true" />
     </div>
   </main>
 </template>

@@ -2,7 +2,11 @@
   import type { BookReserved } from '@/types/books';
   import BookCover from './BookCover.vue';
 
-  defineProps<{ books: BookReserved[]; showTerm?: boolean }>();
+  defineProps<{
+    books: BookReserved[];
+    showTerm?: boolean;
+    showReservationId?: boolean;
+  }>();
 </script>
 
 <template>
@@ -15,10 +19,15 @@
         <h3 class="mt-2 font-semibold">{{ book.title }}</h3>
       </RouterLink>
       <span v-if="book.author">{{ book.author.lastName }}, {{ book.author.firstName }}</span>
-      <br />
-      <em v-if="showTerm && book.isIssued">
-        <span>Issued until: {{ book.reservationTerm }}</span>
-      </em>
+      <div class="mt-2">
+        <em v-if="showTerm && book.isIssued">
+          <span>Issued until: {{ book.reservationTerm }}</span>
+          <br />
+        </em>
+        <em v-if="showReservationId" class="text-sm font-semibold"
+          >Reservation ID: {{ book.reservationId }}</em
+        >
+      </div>
     </li>
   </ul>
 </template>

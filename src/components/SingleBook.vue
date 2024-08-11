@@ -21,7 +21,7 @@
 
   const checkAuth = () => {
     if (auth.loggedOut) {
-      toast.add({ severity: ToastSeverity.WARN, detail: 'Please, login first' });
+      toast.add({ severity: ToastSeverity.WARN, detail: 'Please, login first', life: 3000 });
       router.push({ name: 'login', query: { redirect: router.currentRoute.value.fullPath } });
       return false;
     }
@@ -66,7 +66,7 @@
         <span v-if="books.queuable">Queue up</span>
         <span v-else>Reserve</span>
       </button>
-      <span v-if="book.maxReservationsReached && !book.isReservedByMember" class="block text-xs">
+      <span v-if="book.maxReservationsReached && !books.bookedByMember" class="block text-xs">
         Maximum reserations reached
       </span>
       <CancelButton
