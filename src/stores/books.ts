@@ -2,18 +2,12 @@ import { ToastSeverity } from 'primevue/api';
 import { defineStore } from 'pinia';
 
 import type { Book } from '@/types/books';
-import { getBooks, getBook, orderBook, cancelBookOrder } from '@/api/books';
+import { getBooks } from '@/api/books';
 
-export interface State {
+interface State {
   items: Book[];
   available: Book[];
-  reserved: Book[];
-  book: Book;
-
-  reservedByAnyone: () => boolean;
-  reservable: () => boolean;
-  bookedByMember: () => boolean;
-  queuable: () => boolean;
+  reserved: BookReserved[];
 }
 
 const useBooks = defineStore('books', {
@@ -22,26 +16,7 @@ const useBooks = defineStore('books', {
       items: [],
       available: [],
       reserved: [],
-      book: {},
     };
-  },
-
-  getters: {
-    reservedByAnyone(state: State) {
-      return !state.book.isAvailable;
-    },
-
-    bookedByMember(state: State) {
-      return state.book.isReservedByMember || state.book.isQueuedByMember || state.book.isIssuedToMember;
-    },
-
-    reservable(state: State) {
-      return !state.book.isReservedByMember && !state.book.isQueuedByMember && !state.book.isIssuedToMember;
-    },
-
-    queuable(): boolean {
-      return this.reservedByAnyone && this.reservable;
-    }
   },
 
   actions: {
@@ -65,10 +40,6 @@ const useBooks = defineStore('books', {
       this.reserved = books;
     },
 
-    setBook(book: Book): void {
-      this.book = book;
-    },
-
     async list(): Book[] {
       if (this.items.length > 0) {
         return this.items;
@@ -82,39 +53,6 @@ const useBooks = defineStore('books', {
       const books = await getBooks({ available: true });
       this.setAvailable(books);
       return this.available;
-    },
-
-    async order(id: number): void {
-      const { detail } = await orderBook(id);
-      if (this.book.isReserved || this.book.isIssued) {
-        this.book.isQueuedByMember = true;
-      } else {
-        this.book.isReserved = true;
-        this.book.isReservedByMember = true;
-      }
-      this.book.isAvailable = false;
-      this.addToast(detail);
-    },
-
-    async orderCancel(id: number): void {
-      await cancelBookOrder(id);
-      if (this.book.isReservedByMember) {
-        this.book.isAvailable = true;
-      }
-      this.book.isReservedByMember = false;
-      this.book.isIssuedToMember = false;
-      this.book.maxReservationsReached = false;
-      this.book.isQueuedByMember = false;
-      this.addToast('Reservation cancelled', ToastSeverity.WARN);
-    },
-
-    async get(id: number): Book {
-      if (this.book.id === id) {
-        return this.book;
-      }
-      const book = await getBook(id);
-      this.setBook(book);
-      return this.book;
     },
 
     async search(query: string): Book[] {

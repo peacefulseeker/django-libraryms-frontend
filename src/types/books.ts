@@ -19,17 +19,16 @@ export interface Book {
   isbn: string;
   pages: number;
   pagesDescription: string;
+  coverImageUrl: string;
+  reservationTerm: Date | null;
   isAvailable: boolean;
   isIssued: boolean;
   isReserved: boolean;
   isIssuedToMember: boolean;
   isQueuedByMember: boolean;
   isReservedByMember: boolean;
-  reservationTerm: Date | null;
-  maxReservationsReached: boolean;
-  coverImageUrl: string;
+  isMaxReservationsReached: boolean;
 }
-
 export interface BookReserved {
   id: number;
   title: string;

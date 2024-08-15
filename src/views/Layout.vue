@@ -15,9 +15,11 @@
     menuIconToggled.value = !menuIconToggled.value;
   };
 
+  const username = auth.user?.username;
+
   const accountMenuItems = ref([
     {
-      label: 'Account',
+      label: `Account (${username})`,
       command: () => router.push({ name: 'account' }),
     },
     {

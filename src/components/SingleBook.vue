@@ -1,20 +1,20 @@
 <script setup lang="ts">
-  import type { Book } from '@/types/books';
   import { useRouter } from 'vue-router';
-
-  import useBooks from '@/stores/books';
-  import useAuth from '@/stores/auth';
-  import BookCover from './BookCover.vue';
-  import BookIcon from './icons/BookIcon.vue';
-  import CancelButton from './buttons/CancelButton.vue';
   import { useToast } from 'primevue/usetoast';
   import { ToastSeverity } from 'primevue/api';
+
+  import type { Book } from '@/types/books';
+  import useAuth from '@/stores/auth';
+  import useBook from '@/stores/book';
+  import BookCover from '@/components/BookCover.vue';
+  import BookIcon from '@/components/icons/BookIcon.vue';
+  import CancelButton from '@/components/buttons/CancelButton.vue';
 
   defineProps<{
     book: Book;
   }>();
 
-  const books = useBooks();
+  const bookStore = useBook();
   const auth = useAuth();
   const router = useRouter();
   const toast = useToast();
@@ -30,13 +30,13 @@
 
   const order = (bookId: int) => {
     if (checkAuth()) {
-      books.order(bookId);
+      bookStore.order(bookId);
     }
   };
 
   const orderCancel = (bookId: int) => {
     if (checkAuth()) {
-      books.orderCancel(bookId);
+      bookStore.orderCancel(bookId);
     }
   };
 </script>
@@ -52,21 +52,27 @@
       <div>
         Status:
         <em v-if="book.isAvailable">On shelf</em>
-        <em v-else-if="book.isReserved">Reserved</em>
+        <em v-else-if="book.isReservedByMember">Reserved by you</em>
         <em v-else-if="book.isIssued">
-          <span>Issued until: {{ book.reservationTerm }}</span>
+          <span v-if="book.isIssuedToMember">Issued to you until: {{ book.reservationTerm }}</span>
+          <span v-else>
+            Issued until: {{ book.reservationTerm }}
+            <span v-if="book.isQueuedByMember">(Enqueued by you)</span>
+          </span>
         </em>
+        <em v-else-if="book.isQueuedByMember">Enqueued by you</em>
+        <em v-else-if="book.isReserved">Reserved</em>
       </div>
 
       <button
-        v-if="books.reservable"
-        :disabled="book.maxReservationsReached"
+        v-if="bookStore.reservable"
+        :disabled="book.isMaxReservationsReached"
         @click="order(book.id)"
         class="transition-background-color mr-2 mt-2 rounded bg-primary-400 p-3 text-white enabled:hover:bg-primary-300 disabled:opacity-75">
-        <span v-if="books.queuable">Queue up</span>
+        <span v-if="bookStore.queuable">Queue up</span>
         <span v-else>Reserve</span>
       </button>
-      <span v-if="book.maxReservationsReached && !books.bookedByMember" class="block text-xs">
+      <span v-if="book.isMaxReservationsReached && !bookStore.bookedByMember" class="block text-xs">
         Maximum reserations reached
       </span>
       <CancelButton

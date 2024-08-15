@@ -1,18 +1,19 @@
 <script setup lang="ts">
+  import type { Book as BookType } from '@/types/books';
   import { ref, watch } from 'vue';
   import { useRoute } from 'vue-router';
-  import useBooks from '@/stores/books';
+  import useBook from '@/stores/book';
   import Book from '@/components/SingleBook.vue';
   import Spinner from '@/components/Spinner.vue';
   import GoBack from '@/components/GoBack.vue';
 
-  const books = useBooks();
-  const route = useRoute();
-  const book = ref(null);
+  const book = ref({}) as BookType;
   const loading = ref(true);
+  const bookStore = useBook();
+  const route = useRoute();
 
   const fetchBook = async (id: number) => {
-    book.value = await books.get(id);
+    book.value = await bookStore.get(id);
     loading.value = false;
   };
   watch(() => route.params.id, fetchBook, { immediate: true });
