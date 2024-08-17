@@ -24,7 +24,10 @@ const viteConfig = defineConfig({
   },
   experimental: {
     renderBuiltUrl(filename) {
-        return '/static/' + filename
+        if (filename.indexOf('/assets/') !== -1) {
+          return '/static/frontend/assets/' + filename.replace(/^assets\//, '');
+        }
+        return '/static/frontend/' + filename;
     },
   }
 });
