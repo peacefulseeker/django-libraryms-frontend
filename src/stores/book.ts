@@ -49,26 +49,11 @@ const useBook = defineStore('book', {
 
     async order(id: number): void {
       const { detail } = await orderBook(id);
-      if (this.book.isReserved || this.book.isIssued) {
-        this.book.isQueuedByMember = true;
-      } else {
-        this.book.isReserved = true;
-        this.book.isReservedByMember = true;
-      }
-      this.book.isAvailable = false;
       this.addToast(detail);
     },
 
     async orderCancel(id: number): void {
       await cancelBookOrder(id);
-      if (this.book.isReservedByMember || this.book.isQueuedByMember) {
-        this.book.isAvailable = true;
-        this.book.isReserved = false;
-      }
-      this.book.isQueuedByMember = false;
-      this.book.isReservedByMember = false;
-      this.book.isIssuedToMember = false;
-      this.book.isMaxReservationsReached = false;
       this.addToast('Reservation cancelled', ToastSeverity.WARN);
     },
 

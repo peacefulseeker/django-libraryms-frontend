@@ -1,29 +1,74 @@
 <script setup lang="ts">
-  import type { Book as BookType } from '@/types/books';
   import { ref, watch } from 'vue';
-  import { useRoute } from 'vue-router';
+  import { useRoute, useRouter } from 'vue-router';
+  import { ToastSeverity } from 'primevue/api';
+  import { useToast } from 'primevue/usetoast';
+
+  import type { Book as BookType } from '@/types/books';
   import useBook from '@/stores/book';
   import Book from '@/components/SingleBook.vue';
   import Spinner from '@/components/Spinner.vue';
   import GoBack from '@/components/GoBack.vue';
+  import useAuth from '@/stores/auth';
 
+  const toast = useToast();
   const book = ref({}) as BookType;
-  const loading = ref(true);
+  const bookLoading = ref(true);
+  const bookOrderProcessing = ref(false);
   const bookStore = useBook();
   const route = useRoute();
+  const router = useRouter();
+  const auth = useAuth();
+
+  const checkAuth = () => {
+    if (auth.loggedOut) {
+      toast.add({ severity: ToastSeverity.WARN, detail: 'Please, login first', life: 3000 });
+      router.push({ name: 'login', query: { redirect: router.currentRoute.value.fullPath } });
+      return false;
+    }
+    return true;
+  };
+
+  const swapBookOrderProcessing = () => {
+    bookOrderProcessing.value = !bookOrderProcessing.value;
+  };
 
   const fetchBook = async (id: number) => {
     book.value = await bookStore.get(id);
-    loading.value = false;
+    bookLoading.value = false;
   };
+
+  const onOrder = async (bookId: int) => {
+    if (checkAuth()) {
+      await bookStore.order(bookId);
+      swapBookOrderProcessing();
+      book.value = await bookStore.get(bookId);
+      swapBookOrderProcessing();
+    }
+  };
+
+  const onOrderCancel = async (bookId: int) => {
+    if (checkAuth()) {
+      await bookStore.orderCancel(bookId);
+      swapBookOrderProcessing();
+      book.value = await bookStore.get(bookId);
+      swapBookOrderProcessing();
+    }
+  };
+
   watch(() => route.params.id, fetchBook, { immediate: true });
 </script>
 
 <template>
   <main>
     <GoBack />
-    <Spinner v-if="loading" />
-    <Book v-else :book="book" />
+    <Spinner v-if="bookLoading" />
+    <Book
+      v-else
+      :book="book"
+      :orderProcessing="bookOrderProcessing"
+      :onOrder="onOrder"
+      :onOrderCancel="onOrderCancel" />
   </main>
 </template>
 
