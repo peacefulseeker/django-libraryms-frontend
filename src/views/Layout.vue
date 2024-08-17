@@ -10,16 +10,19 @@
   const auth = useAuth();
   const accountMenu = ref(null);
   const menuIconToggled = ref(false);
+  const username = ref(auth.user?.username);
+
+  auth.$subscribe((_, state) => {
+    username.value = state.user?.username;
+  });
 
   const toggleIcon = () => {
     menuIconToggled.value = !menuIconToggled.value;
   };
 
-  const username = auth.user?.username;
-
   const accountMenuItems = ref([
     {
-      label: `Account (${username})`,
+      label: () => `Account (${username.value})`,
       command: () => router.push({ name: 'account' }),
     },
     {
