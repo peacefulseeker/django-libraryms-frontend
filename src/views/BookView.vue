@@ -40,8 +40,8 @@
 
   const onOrder = async (bookId: int) => {
     if (checkAuth()) {
-      await bookStore.order(bookId);
       swapBookOrderProcessing();
+      await bookStore.order(bookId);
       book.value = await bookStore.get(bookId);
       swapBookOrderProcessing();
     }
@@ -49,8 +49,8 @@
 
   const onOrderCancel = async (bookId: int) => {
     if (checkAuth()) {
-      await bookStore.orderCancel(bookId);
       swapBookOrderProcessing();
+      await bookStore.orderCancel(bookId);
       book.value = await bookStore.get(bookId);
       swapBookOrderProcessing();
     }
