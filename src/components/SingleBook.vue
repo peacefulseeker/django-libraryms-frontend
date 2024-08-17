@@ -51,6 +51,7 @@
       </span>
       <CancelButton
         v-if="book.isReservedByMember || book.isQueuedByMember"
+        :disabled="orderProcessing"
         @click="onOrderCancel(book.id)">
         Cancel reservation
       </CancelButton>

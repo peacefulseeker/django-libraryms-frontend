@@ -39,7 +39,7 @@
   };
 
   const onOrder = async (bookId: int) => {
-    if (checkAuth()) {
+    if (!bookOrderProcessing.value && checkAuth()) {
       swapBookOrderProcessing();
       await bookStore.order(bookId);
       book.value = await bookStore.get(bookId);
@@ -48,7 +48,7 @@
   };
 
   const onOrderCancel = async (bookId: int) => {
-    if (checkAuth()) {
+    if (!bookOrderProcessing.value && checkAuth()) {
       swapBookOrderProcessing();
       await bookStore.orderCancel(bookId);
       book.value = await bookStore.get(bookId);
@@ -66,7 +66,7 @@
     <Book
       v-else
       :book="book"
-      :orderProcessing="bookOrderProcessing"
+      :orderProcessing="!!bookOrderProcessing"
       :onOrder="onOrder"
       :onOrderCancel="onOrderCancel" />
   </main>
