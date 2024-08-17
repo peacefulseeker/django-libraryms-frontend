@@ -29,14 +29,17 @@ export interface Book {
   isReservedByMember: boolean;
   isMaxReservationsReached: boolean;
 }
-export interface BookReserved {
+export interface BookInList {
   id: number;
-  title: string;
   author: Author;
+  title: string;
+  coverImageUrl: string;
+}
+
+export interface BookReserved extends BookInList {
   pages: string;
   reservationTerm: Date;
   reservationId: number;
-  coverImageUrl: string;
   isAvailable: string;
   isIssued: string;
 }
