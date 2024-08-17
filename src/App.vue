@@ -32,7 +32,6 @@
 
   onMounted(() => {
     if (props.error) {
-      console.log(props.error);
       toast.add({
         severity: ToastSeverity.WARN,
         summary: props.error.status,

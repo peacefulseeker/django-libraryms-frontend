@@ -9,7 +9,7 @@
 </script>
 
 <template>
-  <a class="link mb-5 inline-flex items-center hover:no-underline" @click="goBack">
+  <a href="" class="link mb-5 inline-flex items-center hover:no-underline" @click.prevent="goBack">
     <i class="pi pi-arrow-left mr-2"></i>
     Back
   </a>

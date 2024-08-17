@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import type { BookReserved } from '@/types/books';
+  import type { BookInList, BookReserved } from '@/types/books';
   import BookCover from './BookCover.vue';
 
   defineProps<{
-    books: BookReserved[];
+    books: BookInList[] | BookReserved[];
     showTerm?: boolean;
     showReservationId?: boolean;
   }>();

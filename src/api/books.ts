@@ -1,6 +1,6 @@
 import axios from '@/axios';
 
-import { type Book } from '@/types/books';
+import { type BookInList } from '@/types/books';
 
 type OrderResponse = {
   orderId: number;
@@ -28,7 +28,7 @@ export const getBooks = async ({ query, available, reservedByMe }: BookQueryPara
     url += `?reserved_by_me`;
   }
 
-  return (await axios.get(url)).data as Book[];
+  return (await axios.get(url)).data as BookInList[];
 };
 
 export const getBook = async (id: number) => {
