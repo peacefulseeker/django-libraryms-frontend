@@ -26,7 +26,9 @@ const useBook = defineStore('book', {
     },
 
     bookedByMember() {
-      return this.book.isReservedByMember || this.book.isQueuedByMember || this.book.isIssuedToMember;
+      return (
+        this.book.isReservedByMember || this.book.isQueuedByMember || this.book.isIssuedToMember
+      );
     },
 
     reservable(): boolean {
@@ -35,7 +37,7 @@ const useBook = defineStore('book', {
 
     queuable(): boolean {
       return this.reservedByAnyone && !this.bookedByMember;
-    }
+    },
   },
 
   actions: {

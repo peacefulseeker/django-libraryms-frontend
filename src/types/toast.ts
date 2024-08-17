@@ -1,5 +1,7 @@
-import { type ToastServiceMethods } from "primevue/toastservice";
+import { type ToastServiceMethods } from 'primevue/toastservice';
 
 declare global {
-  interface Window { $toast: ToastServiceMethods; }
+  interface Window {
+    $toast: ToastServiceMethods;
+  }
 }
