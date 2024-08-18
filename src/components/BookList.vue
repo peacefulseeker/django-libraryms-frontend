@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import type { BookInList, BookReserved, BookEnqueued } from '@/types/books';
+  import { type BookEnqueued, type BookInList, type BookReserved } from '@/types/books';
   import BookCover from './BookCover.vue';
 
   defineProps<{
-    books: Array<BookInList | BookReserved | BookEnqueued>;
+    books: BookInList[] | BookReserved[] | BookEnqueued[];
   }>();
 </script>
 

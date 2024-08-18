@@ -6,10 +6,11 @@
   import Spinner from '@/components/Spinner.vue';
   import Banner from '@/components/HeroBanner.vue';
   import { useRouter } from 'vue-router';
+  import type { BookEnqueued, BookReserved } from '@/types/books';
 
   const loading = ref(true);
-  const reservedBooks = ref([]);
-  const enqueuedBooks = ref([]);
+  const reservedBooks = ref<BookReserved[]>([]);
+  const enqueuedBooks = ref<BookEnqueued[]>([]);
   const hasReservations = ref(false);
   const router = useRouter();
 
@@ -18,9 +19,9 @@
     hasReservations.value = allReservations.length > 0;
     allReservations.forEach((book) => {
       if (book.reservationId) {
-        reservedBooks.value.push(book);
+        reservedBooks.value.push(book as BookReserved);
       } else {
-        enqueuedBooks.value.push(book);
+        enqueuedBooks.value.push(book as BookEnqueued);
       }
     });
     loading.value = false;

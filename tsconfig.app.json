@@ -9,6 +9,8 @@
     "src/**/__tests__/*"
   ],
   "compilerOptions": {
+    "allowJs": true,
+    "noEmit": true,
     "composite": true,
     "baseUrl": ".",
     "paths": {

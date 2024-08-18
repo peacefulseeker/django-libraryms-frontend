@@ -1,7 +1,8 @@
-import { ToastSeverity } from 'primevue/api';
 import { defineStore } from 'pinia';
+import type { ToastMessageOptions } from 'primevue/toast';
+import { ToastSeverity } from 'primevue/api';
 
-import type { BookInList, BookReserved } from '@/types/books';
+import type { BookEnqueued, BookInList, BookReserved } from '@/types/books';
 import { getBooks } from '@/api/books';
 
 interface State {
@@ -22,12 +23,12 @@ const useBooks = defineStore('books', {
   },
 
   actions: {
-    addToast(detail: string, severity: ToastSeverity = ToastSeverity.SUCCESS) {
+    addToast(detail: string, severity = ToastSeverity.SUCCESS) {
       window.$toast.add({
         severity,
         detail: detail,
         life: 3000,
-      });
+      } as ToastMessageOptions);
     },
 
     setBooks(books: BookInList[]): void {
@@ -42,7 +43,7 @@ const useBooks = defineStore('books', {
       this.reserved = books;
     },
 
-    async list(): BookInList[] {
+    async list(): Promise<BookInList[]> {
       if (this.items.length > 0) {
         return this.items;
       }
@@ -51,20 +52,20 @@ const useBooks = defineStore('books', {
       return this.items;
     },
 
-    async listAvailable(): BookInList[] {
+    async listAvailable() {
       const books = await getBooks({ available: true });
       this.setAvailable(books);
-      return this.available;
+      return this.available as BookInList[];
     },
 
-    async search(query: string): BookInList[] {
-      const books = await getBooks({ query });
+    async search(query: string): Promise<BookInList[]> {
+      const books = (await getBooks({ query })) as BookInList[];
       this.setBooks(books);
       return this.items;
     },
 
-    async listReservedByMember(): BookReserved[] {
-      const books = await getBooks({ reservedByMe: true });
+    async listReservedByMember(): Promise<BookReserved[]> {
+      const books = (await getBooks({ reservedByMe: true })) as BookReserved[];
       this.setMemberReserved(books);
       return this.reserved;
     },

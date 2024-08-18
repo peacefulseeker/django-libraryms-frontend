@@ -1,16 +1,16 @@
 import { defineStore } from 'pinia';
-
 import { ToastSeverity } from 'primevue/api';
+import type { ToastMessageOptions } from 'primevue/toast';
 
 import router from '@/router';
 import type { User } from '@/types/auth';
 import { loginWithCredentials, clearToken, refreshAuth } from '@/api/auth';
 
-type AuthStoreState = {
+interface AuthStoreState {
   token: string | undefined;
   refresh_attempted: boolean;
   user: User;
-};
+}
 
 const useAuth = defineStore('auth', {
   state: (): AuthStoreState => {
@@ -19,6 +19,7 @@ const useAuth = defineStore('auth', {
       refresh_attempted: false,
       user: {
         uuid: '',
+        email: '',
         username: '',
         firstName: '',
         lastName: '',
@@ -26,23 +27,23 @@ const useAuth = defineStore('auth', {
     };
   },
   getters: {
-    refreshable(state: AuthStoreState) {
+    refreshable(state) {
       return !state.refresh_attempted;
     },
-    loggedIn(state: AuthStoreState) {
+    loggedIn(state) {
       return state.token !== undefined;
     },
-    loggedOut(state: AuthStoreState) {
-      return !state.loggedIn;
+    loggedOut() {
+      return !this.loggedIn;
     },
   },
   actions: {
-    addToast(detail: string, severity: ToastSeverity = ToastSeverity.SUCCESS) {
+    addToast(detail: string, severity = ToastSeverity.SUCCESS) {
       window.$toast.add({
         severity,
         detail: detail,
         life: 3000,
-      });
+      } as ToastMessageOptions);
     },
 
     async refreshAuth() {

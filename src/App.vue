@@ -1,19 +1,14 @@
 <script setup lang="ts">
-  import Toast from 'primevue/toast';
+  import Toast, { type ToastMessageOptions } from 'primevue/toast';
   import Layout from './views/Layout.vue';
   import { useToast } from 'primevue/usetoast';
   import { onMounted, onUnmounted } from 'vue';
   import { ToastSeverity } from 'primevue/api';
 
   import useAuth from '@/stores/auth';
-  import type { User } from '@/types/auth';
-  import type PageError from '@/types/pageError';
+  import type { RootProps } from '@/types/rootProps';
 
-  const props = defineProps<{
-    user?: User;
-    access?: string;
-    error?: PageError;
-  }>();
+  const props = defineProps<RootProps>();
 
   const toast = useToast();
 
@@ -24,7 +19,7 @@
       user: props.user,
     });
   }
-  const handleKeyUp = (e) => {
+  const handleKeyUp = (e: KeyboardEvent) => {
     if (e.key === 'Escape') {
       toast.removeAllGroups();
     }
@@ -34,10 +29,10 @@
     if (props.error) {
       toast.add({
         severity: ToastSeverity.WARN,
-        summary: props.error.status,
+        summary: props.error.status.toString(),
         detail: props.error.message,
         life: 3000,
-      });
+      } as ToastMessageOptions);
     }
 
     document.addEventListener('keyup', handleKeyUp);

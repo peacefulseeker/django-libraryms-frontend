@@ -2,13 +2,13 @@
   import Menu from 'primevue/menu';
   import useAuth from '@/stores/auth';
   import SearchWidget from '@/components/SearchWidget.vue';
-  import { ref } from 'vue';
+  import { ref, type Ref } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
 
   const route = useRoute();
   const router = useRouter();
   const auth = useAuth();
-  const accountMenu = ref(null);
+  const accountMenu = ref<Ref | null>(null);
   const menuIconToggled = ref(false);
   const username = ref(auth.user?.username);
 

@@ -1,18 +1,19 @@
 <script setup lang="ts">
-  import { ref, watchEffect } from 'vue';
+  import { ref, watchEffect, type Ref } from 'vue';
   import { useRoute } from 'vue-router';
 
   import useBooks from '@/stores/books';
 
   import BookList from '@/components/BookList.vue';
   import Spinner from '@/components/Spinner.vue';
+  import type { BookInList } from '@/types/books';
 
   const loading = ref(true);
-  const books = ref([]);
+  const books: Ref<BookInList[] | []> = ref([]);
   const route = useRoute();
 
   watchEffect(async () => {
-    books.value = await useBooks().search(route.query.q);
+    books.value = await useBooks().search(route.query.q as string);
     loading.value = false;
   });
 </script>

@@ -4,7 +4,9 @@
   const router = useRouter();
 
   const goBack = () => {
-    router.back() || router.push({ name: 'books' });
+    if (router.back() === undefined) {
+      router.push({ name: 'books' });
+    }
   };
 </script>
 

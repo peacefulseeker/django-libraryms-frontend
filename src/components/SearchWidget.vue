@@ -6,7 +6,7 @@
   import { useRoute } from 'vue-router';
   const route = useRoute();
 
-  const search = ref(route.query.q);
+  const search = ref(route.query.q as string | undefined);
 
   const searchBooks = () => {
     if (route.name !== 'books') {

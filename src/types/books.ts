@@ -35,19 +35,20 @@ export interface BookInList {
   id: number;
   author: Author;
   title: string;
-  coverImageUrl: string;
+  coverImageUrl: string | undefined;
+  isIssued: boolean | null;
+  reservationTerm: Date | null;
+  reservationId: number | null;
+  amountInQueue: number | null;
 }
 
 export interface BookReserved extends BookInList {
   reservationTerm: Date;
-  reservationId: number | null;
-  isIssued: boolean | null;
-  isEnqueuedByMember: null;
+  reservationId: number;
+  isIssued: boolean;
+  amountInQueue: number;
 }
 
-export interface BookEnqueued extends BookReserved {
-  reservationTerm: null;
-  reservationId: null;
-  isEnqueuedByMember: boolean;
+export interface BookEnqueued extends BookInList {
   amountInQueue: number;
 }

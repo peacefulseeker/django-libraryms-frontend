@@ -1,6 +1,6 @@
 import camelcaseKeys from 'camelcase-keys';
 
-const responseCaseMiddleware = (data: Record<string, any> | any[], enable = true) => {
+const responseCaseMiddleware = (data: {}, enable = true) => {
   if (!enable) {
     return data;
   }
