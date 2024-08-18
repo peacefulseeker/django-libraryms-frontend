@@ -24,33 +24,47 @@
         </template>
       </BookCover>
       <div>
-        Status:
-        <em v-if="book.isAvailable">On shelf</em>
-        <em v-else-if="book.isReservedByMember">Reserved by you</em>
-        <em v-else-if="book.isIssued">
-          <span v-if="book.isIssuedToMember">Issued to you until: {{ book.reservationTerm }}</span>
-          <span v-else>
-            Issued until: {{ book.reservationTerm }}
-            <span v-if="book.isQueuedByMember">(Enqueued by you)</span>
-          </span>
-        </em>
-        <em v-else-if="book.isQueuedByMember">Enqueued by you</em>
-        <em v-else-if="book.isReserved">Reserved</em>
+        <div>
+          <em v-if="book.isAvailable">On shelf</em>
+          <em v-else-if="book.isReservedByMember">Reserved by you</em>
+          <em v-else-if="book.isIssued">
+            <span v-if="book.isIssuedToMember">
+              Issued to you until: <br />
+              {{ book.reservationTerm }}
+            </span>
+            <span v-else>
+              Issued to reader until: <br />
+              {{ book.reservationTerm }} <br />
+            </span>
+          </em>
+          <em v-else-if="book.isEnqueuedByMember">Enqueued by you</em>
+          <em v-else-if="book.isReserved">Reserved</em>
+        </div>
+        <span v-if="!book.isIssuedToMember && book.amountInQueue"
+          >Amount in queue: {{ book.amountInQueue }}
+        </span>
       </div>
 
       <button
         v-if="bookStore.reservable"
-        :disabled="book.isMaxReservationsReached || orderProcessing"
+        :disabled="
+          book.isMaxReservationsReached || book.isMaxEnqueuedOrdersReached || orderProcessing
+        "
         @click="onOrder(book.id)"
         class="transition-background-color mr-2 mt-2 rounded bg-primary-400 p-3 text-white enabled:hover:bg-primary-300 disabled:opacity-75">
         <span v-if="bookStore.queuable">Queue up</span>
         <span v-else>Reserve</span>
       </button>
       <span v-if="book.isMaxReservationsReached && !bookStore.bookedByMember" class="block text-xs">
-        Maximum reserations reached
+        Maximum reservations reached
+      </span>
+      <span
+        v-if="book.isMaxEnqueuedOrdersReached && !bookStore.bookedByMember"
+        class="block text-xs">
+        Maximum reservations in queue reached
       </span>
       <CancelButton
-        v-if="book.isReservedByMember || book.isQueuedByMember"
+        v-if="book.isReservedByMember || book.isEnqueuedByMember"
         :disabled="orderProcessing"
         @click="onOrderCancel(book.id)">
         Cancel reservation

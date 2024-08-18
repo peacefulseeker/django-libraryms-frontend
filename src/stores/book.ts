@@ -27,7 +27,7 @@ const useBook = defineStore('book', {
 
     bookedByMember() {
       return (
-        this.book.isReservedByMember || this.book.isQueuedByMember || this.book.isIssuedToMember
+        this.book.isReservedByMember || this.book.isEnqueuedByMember || this.book.isIssuedToMember
       );
     },
 

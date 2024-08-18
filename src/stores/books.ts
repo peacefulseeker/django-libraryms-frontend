@@ -8,6 +8,7 @@ interface State {
   items: BookInList[];
   available: BookInList[];
   reserved: BookReserved[];
+  enqueued: BookEnqueued[];
 }
 
 const useBooks = defineStore('books', {
@@ -16,6 +17,7 @@ const useBooks = defineStore('books', {
       items: [],
       available: [],
       reserved: [],
+      enqueued: [],
     };
   },
 
