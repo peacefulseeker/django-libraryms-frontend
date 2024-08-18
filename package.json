@@ -5,7 +5,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
+        "build": "pnpm check:type && vite build",
         "preview": "vite preview",
         "test:unit": "vitest",
         "check:type": "vue-tsc --project tsconfig.app.json",
