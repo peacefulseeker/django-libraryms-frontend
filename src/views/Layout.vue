@@ -74,6 +74,12 @@
                 @focus="toggleIcon"
                 @blur="toggleIcon"
                 :model="accountMenuItems"
+                :pt="{
+                  // fixes https://github.com/primefaces/primevue/issues/6141
+                  action: {
+                    ariaHidden: false,
+                  },
+                }"
                 :popup="true" />
             </li>
           </ul>
