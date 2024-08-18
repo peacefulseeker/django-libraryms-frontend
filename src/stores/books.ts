@@ -39,8 +39,19 @@ const useBooks = defineStore('books', {
       this.available = books;
     },
 
-    setMemberReserved(books: BookReserved[]): void {
-      this.reserved = books;
+    setMemberReserved(books: BookReserved[] | BookEnqueued[]): void {
+      const reserved = [];
+      const enqueued = [];
+      for (const book of books) {
+        if (book.reservationId) {
+          reserved.push(book as BookReserved);
+        } else {
+          enqueued.push(book as BookEnqueued);
+        }
+      }
+
+      this.reserved = reserved;
+      this.enqueued = enqueued;
     },
 
     async list(): Promise<BookInList[]> {
@@ -64,10 +75,9 @@ const useBooks = defineStore('books', {
       return this.items;
     },
 
-    async listReservedByMember(): Promise<BookReserved[]> {
+    async listReservedByMember(): Promise<void> {
       const books = await getBooks({ reservedByMe: true });
-      this.setMemberReserved(books as BookReserved[]);
-      return this.reserved;
+      this.setMemberReserved(books as BookReserved[] | BookEnqueued[]);
     },
   },
 });
