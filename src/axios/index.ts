@@ -1,7 +1,7 @@
-import axios, { AxiosError, type AxiosResponse } from 'axios';
+import axios, { type AxiosResponse } from 'axios';
 
 import onResponseFulfilled from '@/axios/onResponseFulfilled';
-import onResponseRejected from '@/axios/onResponseRejected';
+import onResponseRejected, { type ErrorResponse } from '@/axios/onResponseRejected';
 import onRequestFulfilled from '@/axios/onRequestFulfilled';
 
 interface CustomAxiosInstanceConfig {
@@ -27,7 +27,7 @@ export const customAxiosInstance = (userConfig: Partial<CustomAxiosInstanceConfi
   instance.interceptors.request.use((request) => onRequestFulfilled(request));
   instance.interceptors.response.use(
     (response: AxiosResponse) => onResponseFulfilled(response, useResponseCaseMiddleware),
-    (error: AxiosError) => onResponseRejected(error, useResponseCaseMiddleware),
+    (error: ErrorResponse) => onResponseRejected(error, useResponseCaseMiddleware),
   );
 
   return instance;

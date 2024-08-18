@@ -8,8 +8,8 @@
   defineProps<{
     book: Book;
     orderProcessing: boolean;
-    onOrder: () => void;
-    onOrderCancel: () => void;
+    onOrder: (_bookId: number) => void;
+    onOrderCancel: (_bookId: number) => void;
   }>();
 
   const bookStore = useBook();

@@ -1,10 +1,22 @@
-import type { AxiosError } from 'axios';
 import { ToastSeverity } from 'primevue/api';
+import { type ToastMessageOptions } from 'primevue/toast';
 
-import responseCaseMiddleware from './responseCaseMiddleware';
-import responseCodes from './response_codes';
+import responseCaseMiddleware from '@/axios/responseCaseMiddleware';
+import responseCodes from '@/axios/response_codes';
 
-const onResponseRejected = (error: AxiosError, enableCaseMiddleware: boolean): Promise => {
+export type ErrorResponse = {
+  response?: {
+    data: {
+      code?: string;
+      detail?: string;
+    };
+  };
+};
+
+const onResponseRejected = (
+  error: ErrorResponse,
+  enableCaseMiddleware: boolean,
+): Promise<ErrorResponse> => {
   if (error.response) {
     if (error.response.data && enableCaseMiddleware) {
       error.response.data = responseCaseMiddleware(error.response.data);
@@ -16,7 +28,7 @@ const onResponseRejected = (error: AxiosError, enableCaseMiddleware: boolean): P
         summary: 'Oops',
         detail: error.response.data.detail || 'Something went wrong',
         life: 3000,
-      });
+      } as ToastMessageOptions);
     }
   }
 

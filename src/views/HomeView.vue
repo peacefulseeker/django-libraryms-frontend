@@ -1,12 +1,13 @@
 <script setup lang="ts">
   import { ref, watchEffect } from 'vue';
 
+  import { type BookInList } from '@/types/books';
   import useBooks from '@/stores/books';
   import HomeBanner from '@/components/HomeBanner.vue';
   import BookList from '@/components/BookList.vue';
   import Spinner from '@/components/Spinner.vue';
 
-  const books = ref([]);
+  const books = ref<BookInList[] | []>([]);
   const loading = ref(true);
 
   watchEffect(async () => {

@@ -6,13 +6,14 @@
 
   import BookList from '@/components/BookList.vue';
   import Spinner from '@/components/Spinner.vue';
+  import type { BookInList } from '@/types/books';
 
   const loading = ref(true);
-  const books = ref([]);
+  const books = ref<BookInList[] | []>([]);
   const route = useRoute();
 
   watchEffect(async () => {
-    books.value = await useBooks().search(route.query.q);
+    books.value = await useBooks().search(route.query.q as string);
     loading.value = false;
   });
 </script>

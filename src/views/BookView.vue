@@ -1,10 +1,11 @@
 <script setup lang="ts">
-  import { ref, watch } from 'vue';
+  import { ref, watch, type WatchCallback } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
-  import { ToastSeverity } from 'primevue/api';
   import { useToast } from 'primevue/usetoast';
+  import type { ToastMessageOptions } from 'primevue/toast';
+  import { ToastSeverity } from 'primevue/api';
 
-  import type { Book as BookType } from '@/types/books';
+  import { type Book as BookType } from '@/types/books';
   import useBook from '@/stores/book';
   import Book from '@/components/SingleBook.vue';
   import Spinner from '@/components/Spinner.vue';
@@ -12,7 +13,7 @@
   import useAuth from '@/stores/auth';
 
   const toast = useToast();
-  const book = ref({}) as BookType;
+  const book = ref({} as BookType);
   const bookLoading = ref(true);
   const bookOrderProcessing = ref(false);
   const bookStore = useBook();
@@ -22,7 +23,11 @@
 
   const checkAuth = () => {
     if (auth.loggedOut) {
-      toast.add({ severity: ToastSeverity.WARN, detail: 'Please, login first', life: 3000 });
+      toast.add({
+        severity: ToastSeverity.WARN,
+        detail: 'Please, login first',
+        life: 3000,
+      } as ToastMessageOptions);
       router.push({ name: 'login', query: { redirect: router.currentRoute.value.fullPath } });
       return false;
     }
@@ -38,7 +43,7 @@
     bookLoading.value = false;
   };
 
-  const onOrder = async (bookId: int) => {
+  const onOrder = async (bookId: number) => {
     if (!bookOrderProcessing.value && checkAuth()) {
       swapBookOrderProcessing();
       await bookStore.order(bookId);
@@ -47,7 +52,7 @@
     }
   };
 
-  const onOrderCancel = async (bookId: int) => {
+  const onOrderCancel = async (bookId: number) => {
     if (!bookOrderProcessing.value && checkAuth()) {
       swapBookOrderProcessing();
       await bookStore.orderCancel(bookId);
@@ -56,7 +61,7 @@
     }
   };
 
-  watch(() => route.params.id, fetchBook, { immediate: true });
+  watch(() => route.params.id, fetchBook as WatchCallback, { immediate: true });
 </script>
 
 <template>

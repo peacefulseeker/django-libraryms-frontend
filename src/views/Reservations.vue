@@ -1,28 +1,20 @@
 <script setup lang="ts">
   import { ref, watch } from 'vue';
+  import { useRouter } from 'vue-router';
 
   import useBooks from '@/stores/books';
   import BookList from '@/components/BookList.vue';
   import Spinner from '@/components/Spinner.vue';
   import Banner from '@/components/HeroBanner.vue';
-  import { useRouter } from 'vue-router';
 
   const loading = ref(true);
-  const reservedBooks = ref([]);
-  const enqueuedBooks = ref([]);
   const hasReservations = ref(false);
+  const books = useBooks();
   const router = useRouter();
 
   const fetchReservedBooks = async () => {
-    const allReservations = await useBooks().listReservedByMember();
-    hasReservations.value = allReservations.length > 0;
-    allReservations.forEach((book) => {
-      if (book.reservationId) {
-        reservedBooks.value.push(book);
-      } else {
-        enqueuedBooks.value.push(book);
-      }
-    });
+    await books.listReservedByMember();
+    hasReservations.value = books.reserved.length > 0 || books.enqueued.length > 0;
     loading.value = false;
   };
   watch(() => null, fetchReservedBooks, { immediate: true });
@@ -39,13 +31,13 @@
         No reservations, check out books:
         <a href="" @click.prevent="router.push({ name: 'books' })" class="link">here</a>
       </h2>
-      <div v-if="reservedBooks.length" class="mb-20">
+      <div v-if="books.reserved.length" class="mb-20">
         <h2 class="mb-4 text-center">Reserved books</h2>
-        <BookList :books="reservedBooks" />
+        <BookList :books="books.reserved" />
       </div>
-      <div v-if="enqueuedBooks.length">
+      <div v-if="books.enqueued.length">
         <h2 class="mb-4 text-center">Enqueued books</h2>
-        <BookList :books="enqueuedBooks" />
+        <BookList :books="books.enqueued" />
       </div>
     </div>
   </main>

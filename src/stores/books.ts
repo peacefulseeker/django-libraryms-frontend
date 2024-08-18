@@ -1,7 +1,8 @@
-import { ToastSeverity } from 'primevue/api';
 import { defineStore } from 'pinia';
+import type { ToastMessageOptions } from 'primevue/toast';
+import { ToastSeverity } from 'primevue/api';
 
-import type { BookInList, BookReserved } from '@/types/books';
+import type { BookEnqueued, BookInList, BookReserved } from '@/types/books';
 import { getBooks } from '@/api/books';
 
 interface State {
@@ -22,12 +23,12 @@ const useBooks = defineStore('books', {
   },
 
   actions: {
-    addToast(detail: string, severity: ToastSeverity = ToastSeverity.SUCCESS) {
+    addToast(detail: string, severity = ToastSeverity.SUCCESS) {
       window.$toast.add({
         severity,
         detail: detail,
         life: 3000,
-      });
+      } as ToastMessageOptions);
     },
 
     setBooks(books: BookInList[]): void {
@@ -38,11 +39,22 @@ const useBooks = defineStore('books', {
       this.available = books;
     },
 
-    setMemberReserved(books: BookReserved[]): void {
-      this.reserved = books;
+    setMemberReserved(books: BookReserved[] | BookEnqueued[]): void {
+      const reserved = [];
+      const enqueued = [];
+      for (const book of books) {
+        if (book.reservationId) {
+          reserved.push(book as BookReserved);
+        } else {
+          enqueued.push(book as BookEnqueued);
+        }
+      }
+
+      this.reserved = reserved;
+      this.enqueued = enqueued;
     },
 
-    async list(): BookInList[] {
+    async list(): Promise<BookInList[]> {
       if (this.items.length > 0) {
         return this.items;
       }
@@ -51,22 +63,21 @@ const useBooks = defineStore('books', {
       return this.items;
     },
 
-    async listAvailable(): BookInList[] {
+    async listAvailable(): Promise<BookInList[]> {
       const books = await getBooks({ available: true });
       this.setAvailable(books);
       return this.available;
     },
 
-    async search(query: string): BookInList[] {
+    async search(query: string): Promise<BookInList[]> {
       const books = await getBooks({ query });
       this.setBooks(books);
       return this.items;
     },
 
-    async listReservedByMember(): BookReserved[] {
+    async listReservedByMember(): Promise<void> {
       const books = await getBooks({ reservedByMe: true });
-      this.setMemberReserved(books);
-      return this.reserved;
+      this.setMemberReserved(books as BookReserved[] | BookEnqueued[]);
     },
   },
 });
