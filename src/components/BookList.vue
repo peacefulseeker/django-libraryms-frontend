@@ -1,11 +1,9 @@
 <script setup lang="ts">
-  import type { BookInList, BookReserved } from '@/types/books';
+  import type { BookInList, BookReserved, BookEnqueued } from '@/types/books';
   import BookCover from './BookCover.vue';
 
   defineProps<{
-    books: BookInList[] | BookReserved[];
-    showTerm?: boolean;
-    showReservationId?: boolean;
+    books: Array<BookInList | BookReserved | BookEnqueued>;
   }>();
 </script>
 
@@ -20,13 +18,23 @@
       </RouterLink>
       <span v-if="book.author">{{ book.author.lastName }}, {{ book.author.firstName }}</span>
       <div class="mt-2">
-        <em v-if="showTerm && book.isIssued">
-          <span>Issued until: {{ book.reservationTerm }}</span>
+        <em v-if="book.reservationTerm">
+          <span v-if="book.reservationId">
+            Issued to you until: <br />
+            {{ book.reservationTerm }}
+          </span>
+          <span v-else>
+            Issued to reader until: <br />
+            {{ book.reservationTerm }}
+          </span>
           <br />
         </em>
-        <em v-if="showReservationId" class="text-sm font-semibold"
-          >Reservation ID: {{ book.reservationId }}</em
-        >
+        <em v-if="book.reservationId" class="text-sm font-semibold">
+          Reservation ID: {{ book.reservationId }}
+        </em>
+        <em v-else-if="!book.reservationId && book.amountInQueue" class="text-sm font-semibold">
+          Amount in queue: {{ book.amountInQueue }}
+        </em>
       </div>
     </li>
   </ul>

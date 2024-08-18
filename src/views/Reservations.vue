@@ -8,11 +8,21 @@
   import { useRouter } from 'vue-router';
 
   const loading = ref(true);
-  const books = ref([]);
+  const reservedBooks = ref([]);
+  const enqueuedBooks = ref([]);
+  const hasReservations = ref(false);
   const router = useRouter();
 
   const fetchReservedBooks = async () => {
-    books.value = await useBooks().listReservedByMember();
+    const allReservations = await useBooks().listReservedByMember();
+    hasReservations.value = allReservations.length > 0;
+    allReservations.forEach((book) => {
+      if (book.reservationId) {
+        reservedBooks.value.push(book);
+      } else {
+        enqueuedBooks.value.push(book);
+      }
+    });
     loading.value = false;
   };
   watch(() => null, fetchReservedBooks, { immediate: true });
@@ -25,11 +35,18 @@
   <main>
     <Spinner v-if="loading" />
     <div v-else>
-      <h2 v-if="!books.length">
+      <h2 v-if="!hasReservations">
         No reservations, check out books:
         <a href="" @click.prevent="router.push({ name: 'books' })" class="link">here</a>
       </h2>
-      <BookList :books="books" :showTerm="true" :showReservationId="true" />
+      <div v-if="reservedBooks.length" class="mb-20">
+        <h2 class="mb-4 text-center">Reserved books</h2>
+        <BookList :books="reservedBooks" />
+      </div>
+      <div v-if="enqueuedBooks.length">
+        <h2 class="mb-4 text-center">Enqueued books</h2>
+        <BookList :books="enqueuedBooks" />
+      </div>
     </div>
   </main>
 </template>

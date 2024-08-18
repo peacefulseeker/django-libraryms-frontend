@@ -25,9 +25,11 @@ export interface Book {
   isIssued: boolean;
   isReserved: boolean;
   isIssuedToMember: boolean;
-  isQueuedByMember: boolean;
+  isEnqueuedByMember: boolean;
   isReservedByMember: boolean;
   isMaxReservationsReached: boolean;
+  isMaxEnqueuedOrdersReached: boolean;
+  amountInQueue: number;
 }
 export interface BookInList {
   id: number;
@@ -37,9 +39,15 @@ export interface BookInList {
 }
 
 export interface BookReserved extends BookInList {
-  pages: string;
   reservationTerm: Date;
-  reservationId: number;
-  isAvailable: string;
-  isIssued: string;
+  reservationId: number | null;
+  isIssued: boolean | null;
+  isEnqueuedByMember: null;
+}
+
+export interface BookEnqueued extends BookReserved {
+  reservationTerm: null;
+  reservationId: null;
+  isEnqueuedByMember: boolean;
+  amountInQueue: number;
 }
