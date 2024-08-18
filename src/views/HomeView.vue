@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, watchEffect, type Ref } from 'vue';
+  import { ref, watchEffect } from 'vue';
 
   import { type BookInList } from '@/types/books';
   import useBooks from '@/stores/books';
@@ -7,7 +7,7 @@
   import BookList from '@/components/BookList.vue';
   import Spinner from '@/components/Spinner.vue';
 
-  const books: Ref<BookInList[] | []> = ref([]);
+  const books = ref<BookInList[] | []>([]);
   const loading = ref(true);
 
   watchEffect(async () => {

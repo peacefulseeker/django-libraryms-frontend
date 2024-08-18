@@ -9,6 +9,7 @@
         "preview": "vite preview",
         "test:unit": "vitest",
         "check:type": "vue-tsc --project tsconfig.app.json",
+        "watch:type": "pnpm check:type --watch",
         "check:lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore  --max-warnings=0",
         "check:format": "prettier --check src/",
         "fix:format": "prettier --write src/"

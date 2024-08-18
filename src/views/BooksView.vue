@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, watchEffect, type Ref } from 'vue';
+  import { ref, watchEffect } from 'vue';
   import { useRoute } from 'vue-router';
 
   import useBooks from '@/stores/books';
@@ -9,7 +9,7 @@
   import type { BookInList } from '@/types/books';
 
   const loading = ref(true);
-  const books: Ref<BookInList[] | []> = ref([]);
+  const books = ref<BookInList[] | []>([]);
   const route = useRoute();
 
   watchEffect(async () => {

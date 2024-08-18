@@ -7,12 +7,13 @@
 
   import { type Book as BookType } from '@/types/books';
   import useBook from '@/stores/book';
+  import Book from '@/components/SingleBook.vue';
   import Spinner from '@/components/Spinner.vue';
   import GoBack from '@/components/GoBack.vue';
   import useAuth from '@/stores/auth';
 
   const toast = useToast();
-  const book = ref<BookType | {}>({});
+  const book = ref({} as BookType);
   const bookLoading = ref(true);
   const bookOrderProcessing = ref(false);
   const bookStore = useBook();
