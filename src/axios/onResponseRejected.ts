@@ -1,5 +1,8 @@
-import responseCaseMiddleware from './responseCaseMiddleware';
-import responseCodes from './response_codes';
+import { ToastSeverity } from 'primevue/api';
+import { type ToastMessageOptions } from 'primevue/toast';
+
+import responseCaseMiddleware from '@/axios/responseCaseMiddleware';
+import responseCodes from '@/axios/response_codes';
 
 export type ErrorResponse = {
   response?: {
@@ -21,11 +24,11 @@ const onResponseRejected = (
 
     if (error.response.data.code !== responseCodes.ACCESS_TOKEN_NOT_VALID) {
       window.$toast.add({
-        severity: 'error',
+        severity: ToastSeverity.ERROR,
         summary: 'Oops',
         detail: error.response.data.detail || 'Something went wrong',
         life: 3000,
-      });
+      } as ToastMessageOptions);
     }
   }
 

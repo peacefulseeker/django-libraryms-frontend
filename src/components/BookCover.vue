@@ -2,7 +2,7 @@
   import BookIcon from './icons/BookIcon.vue';
 
   defineProps<{
-    imageSrc: string | undefined;
+    imageSrc?: string;
   }>();
 </script>
 

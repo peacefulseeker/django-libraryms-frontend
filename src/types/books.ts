@@ -19,8 +19,8 @@ export interface Book {
   isbn: string;
   pages: number;
   pagesDescription: string;
-  coverImageUrl: string;
-  reservationTerm: Date | null;
+  coverImageUrl?: string;
+  reservationTerm?: Date;
   isAvailable: boolean;
   isIssued: boolean;
   isReserved: boolean;
@@ -35,11 +35,11 @@ export interface BookInList {
   id: number;
   author: Author;
   title: string;
-  coverImageUrl: string | undefined;
-  isIssued: boolean | null;
-  reservationTerm: Date | null;
-  reservationId: number | null;
-  amountInQueue: number | null;
+  coverImageUrl?: string;
+  isIssued?: boolean;
+  reservationTerm?: Date;
+  reservationId?: number;
+  amountInQueue?: number;
 }
 
 export interface BookReserved extends BookInList {

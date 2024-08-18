@@ -52,21 +52,21 @@ const useBooks = defineStore('books', {
       return this.items;
     },
 
-    async listAvailable() {
+    async listAvailable(): Promise<BookInList[]> {
       const books = await getBooks({ available: true });
       this.setAvailable(books);
-      return this.available as BookInList[];
+      return this.available;
     },
 
     async search(query: string): Promise<BookInList[]> {
-      const books = (await getBooks({ query })) as BookInList[];
+      const books = await getBooks({ query });
       this.setBooks(books);
       return this.items;
     },
 
     async listReservedByMember(): Promise<BookReserved[]> {
-      const books = (await getBooks({ reservedByMe: true })) as BookReserved[];
-      this.setMemberReserved(books);
+      const books = await getBooks({ reservedByMe: true });
+      this.setMemberReserved(books as BookReserved[]);
       return this.reserved;
     },
   },

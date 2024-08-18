@@ -57,9 +57,9 @@ const useBook = defineStore('book', {
       this.addToast('Reservation cancelled', 'warn' as 'warn');
     },
 
-    async get(id: number | string) {
+    async get(id: number): Promise<Book> {
       this.book = await getBook(id);
-      return this.book as Book;
+      return this.book;
     },
   },
 });

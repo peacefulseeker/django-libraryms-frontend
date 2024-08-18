@@ -38,7 +38,7 @@
     bookOrderProcessing.value = !bookOrderProcessing.value;
   };
 
-  const fetchBook = async (id: string) => {
+  const fetchBook = async (id: number) => {
     book.value = await bookStore.get(id);
     bookLoading.value = false;
   };

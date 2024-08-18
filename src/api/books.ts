@@ -9,8 +9,8 @@ type OrderResponse = {
 };
 
 export interface BookQueryParams {
-  query?: string | undefined;
-  available?: boolean | undefined;
+  query?: string;
+  available?: boolean;
   reservedByMe?: boolean;
 }
 
@@ -31,7 +31,7 @@ export const getBooks = async ({ query, available, reservedByMe }: BookQueryPara
   return (await axios.get(url)).data as BookInList[] | BookReserved[] | BookEnqueued[];
 };
 
-export const getBook = async (id: number | string) => {
+export const getBook = async (id: number) => {
   const url = `/api/v1/books/${id}/`;
 
   return (await axios.get(url)).data as Book;
