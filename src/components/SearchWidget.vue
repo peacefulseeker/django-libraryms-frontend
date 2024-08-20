@@ -1,9 +1,11 @@
 <script setup lang="ts">
-  import router from '@/router';
   import Button from 'primevue/button';
   import InputText from 'primevue/inputtext';
   import { ref } from 'vue';
   import { useRoute } from 'vue-router';
+
+  import router from '@/router';
+
   const route = useRoute();
 
   const search = ref(route.query.q as string);
@@ -23,7 +25,7 @@
   };
 </script>
 <template>
-  <form @submit.prevent="searchBooks" class="search-form flex items-stretch">
+  <form @submit.prevent="searchBooks" class="flex items-stretch justify-center">
     <InputText
       v-model="search"
       v-focus

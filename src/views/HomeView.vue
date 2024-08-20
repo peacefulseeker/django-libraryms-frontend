@@ -1,17 +1,16 @@
 <script setup lang="ts">
   import { ref, watchEffect } from 'vue';
 
-  import { type BookInList } from '@/types/books';
-  import useBooks from '@/stores/books';
-  import HomeBanner from '@/components/HomeBanner.vue';
   import BookList from '@/components/BookList.vue';
+  import HomeBanner from '@/components/HomeBanner.vue';
   import Spinner from '@/components/Spinner.vue';
+  import useBooks from '@/stores/books';
 
-  const books = ref<BookInList[] | []>([]);
+  const books = useBooks();
   const loading = ref(true);
 
   watchEffect(async () => {
-    books.value = await useBooks().listAvailable();
+    await books.listAvailable();
     loading.value = false;
   });
 </script>
@@ -23,7 +22,7 @@
       <Spinner v-if="loading" />
       <div v-else>
         <h2 class="mb-10">New books for reservation</h2>
-        <BookList :books="books" />
+        <BookList :books="books.available" />
       </div>
     </div>
   </main>

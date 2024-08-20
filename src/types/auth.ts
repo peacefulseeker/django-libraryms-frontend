@@ -6,7 +6,20 @@ export interface User {
   email: string;
 }
 
-export type AuthenticatedResponse = {
+export interface AuthenticatedResponse {
   access: string;
   user: User;
-};
+}
+
+export interface RegistrationResponse {
+  registrationCode: string;
+}
+
+export interface RegistrationCredentials {
+  username: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+  firstName?: string;
+  lastName?: string;
+}

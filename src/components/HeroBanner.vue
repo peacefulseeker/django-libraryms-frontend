@@ -1,9 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div
-    class="with-bg-gradient banner flex w-full items-center justify-center px-5"
-    style="min-height: 240px">
+  <div class="with-bg-gradient w-full px-5 py-28 text-center">
     <slot />
   </div>
 </template>

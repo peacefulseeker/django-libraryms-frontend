@@ -1,5 +1,9 @@
 import axios from '@/axios';
-import type { AuthenticatedResponse } from '@/types/auth';
+import type {
+  AuthenticatedResponse,
+  RegistrationCredentials,
+  RegistrationResponse,
+} from '@/types/auth';
 
 export const refreshAuth = async () => {
   const url = `/api/v1/auth/token/refresh/`;
@@ -18,6 +22,27 @@ export const loginWithCredentials = async (
   };
 
   return (await axios.post(url, data)).data as AuthenticatedResponse;
+};
+
+export const registerMember = async ({
+  username,
+  password,
+  passwordConfirm,
+  email,
+  firstName,
+  lastName,
+}: RegistrationCredentials): Promise<RegistrationResponse> => {
+  const url = `/api/v1/auth/register/`;
+  const data = {
+    username,
+    password,
+    passwordConfirm,
+    email,
+    firstName,
+    lastName,
+  };
+
+  return (await axios.post(url, data)).data as RegistrationResponse;
 };
 
 export const clearToken = async (): Promise<void> => {
