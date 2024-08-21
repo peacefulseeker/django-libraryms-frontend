@@ -3,19 +3,26 @@ import type {
   AuthenticatedResponse,
   RegistrationCredentials,
   RegistrationResponse,
+  User,
 } from '@/types/auth';
 
-export const refreshAuth = async () => {
-  const url = `/api/v1/auth/token/refresh/`;
-
+export const refreshAuth = async (fetchUser: boolean = false) => {
+  let url = '/api/v1/auth/token/refresh/';
+  if (fetchUser) {
+    url += '?fetch_user';
+  }
   return (await axios.post(url)).data as AuthenticatedResponse;
 };
 
 export const loginWithCredentials = async (
   username: string,
   password: string,
+  fetchUser: boolean = false,
 ): Promise<AuthenticatedResponse> => {
-  const url = `/api/v1/auth/token/`;
+  let url = '/api/v1/auth/token/';
+  if (fetchUser) {
+    url += '?fetch_user';
+  }
   const data = {
     username,
     password,
@@ -48,4 +55,9 @@ export const registerMember = async ({
 export const clearToken = async (): Promise<void> => {
   const url = `/api/v1/auth/token/`;
   await axios.delete(url);
+};
+
+export const getUser = async (): Promise<User> => {
+  const url = `/api/v1/auth/me/`;
+  return (await axios.get(url)).data as User;
 };

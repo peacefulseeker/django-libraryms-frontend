@@ -22,10 +22,10 @@ const getAuth = () => {
   return auth;
 };
 
-const refreshAuthOnDemand = async () => {
+const refreshAuthOnDemand = async (route: RouteLocationNormalized) => {
   const auth = getAuth();
   if (auth.loggedOut && auth.refreshable) {
-    await auth.refreshAuth();
+    await auth.refreshAuth(route);
   }
   return auth;
 };
@@ -78,7 +78,7 @@ const routes = [
   {
     path: '/account',
     name: 'account',
-    meta: { authRequired: true },
+    meta: { authRequired: true, fetchUser: true },
     component: AccountView,
   },
   {
@@ -98,7 +98,7 @@ router.beforeEach(async (to: RouteLocationNormalized, _from: RouteLocationNormal
   if (!to.name) {
     return { name: 'home' };
   }
-  const auth = await refreshAuthOnDemand();
+  const auth = await refreshAuthOnDemand(to);
   return redirectBasedOnAuth(to, auth);
 });
 

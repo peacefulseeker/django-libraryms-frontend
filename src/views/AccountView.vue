@@ -1,25 +1,34 @@
 <script setup lang="ts">
-  import Banner from '@/components/HeroBanner.vue';
-  import useAuth from '@/stores/auth';
   import Button from 'primevue/button';
+  import { ref, watchEffect } from 'vue';
   import { useRouter } from 'vue-router';
 
+  import Banner from '@/components/HeroBanner.vue';
+  import Spinner from '@/components/Spinner.vue';
+  import useAuth from '@/stores/auth';
+
   const auth = useAuth();
-  const user = auth.user;
   const router = useRouter();
+  const loading = ref(true);
+
+  watchEffect(async () => {
+    if (!auth.user.email) {
+      await auth.getUser();
+    }
+    loading.value = false;
+  });
 </script>
 
 <template>
   <Banner>
-    <h1>Hi, {{ user.username }}!</h1>
+    <h1>Hi, {{ auth.user.username }}!</h1>
   </Banner>
-
   <main>
-    <div>
-      <p>Your uuid: {{ user.uuid }}</p>
-      <p>Your email: {{ user.email }}</p>
-      <p>Your first name: {{ user.firstName }}</p>
-      <p>Your last name: {{ user.lastName }}</p>
+    <Spinner v-if="loading" />
+    <div v-else>
+      <p>Your email: {{ auth.user.email }}</p>
+      <p>Your first name: {{ auth.user.firstName }}</p>
+      <p>Your last name: {{ auth.user.lastName }}</p>
       <Button class="mt-4" @click="router.push({ name: 'reservations' })">View reservations</Button>
     </div>
   </main>

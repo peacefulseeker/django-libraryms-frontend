@@ -1,9 +1,8 @@
 export interface User {
-  uuid: string;
   username: string;
-  firstName: string | null;
-  lastName: string | null;
-  email: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
 }
 
 export interface AuthenticatedResponse {

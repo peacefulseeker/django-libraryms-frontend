@@ -1,4 +1,5 @@
-import { type User } from './auth';
+import type { User } from './auth';
+
 import type PageError from '@/types/pageError';
 
 export interface RootProps {
