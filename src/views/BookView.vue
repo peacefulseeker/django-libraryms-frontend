@@ -1,16 +1,16 @@
 <script setup lang="ts">
+  import { ToastSeverity } from 'primevue/api';
+  import type { ToastMessageOptions } from 'primevue/toast';
+  import { useToast } from 'primevue/usetoast';
   import { ref, watch, type WatchCallback } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
-  import { useToast } from 'primevue/usetoast';
-  import type { ToastMessageOptions } from 'primevue/toast';
-  import { ToastSeverity } from 'primevue/api';
 
-  import { type Book as BookType } from '@/types/books';
-  import useBook from '@/stores/book';
+  import GoBack from '@/components/GoBack.vue';
   import Book from '@/components/SingleBook.vue';
   import Spinner from '@/components/Spinner.vue';
-  import GoBack from '@/components/GoBack.vue';
   import useAuth from '@/stores/auth';
+  import useBook from '@/stores/book';
+  import { type Book as BookType } from '@/types/books';
 
   const toast = useToast();
   const book = ref({} as BookType);

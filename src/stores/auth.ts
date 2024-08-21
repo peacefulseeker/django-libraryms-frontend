@@ -1,14 +1,15 @@
 import { defineStore } from 'pinia';
 import { ToastSeverity } from 'primevue/api';
 import type { ToastMessageOptions } from 'primevue/toast';
+import type { RouteLocationNormalized } from 'vue-router';
 
-import { clearToken, loginWithCredentials, refreshAuth, registerMember } from '@/api/auth';
+import { clearToken, getUser, loginWithCredentials, refreshAuth, registerMember } from '@/api/auth';
 import router from '@/router';
 import type { RegistrationCredentials, User } from '@/types/auth';
 
 interface AuthStoreState {
   token: string | undefined;
-  refresh_attempted: boolean;
+  refreshAttempted: boolean;
   user: User;
 }
 
@@ -16,9 +17,8 @@ const useAuth = defineStore('auth', {
   state: (): AuthStoreState => {
     return {
       token: undefined,
-      refresh_attempted: false,
+      refreshAttempted: false,
       user: {
-        uuid: '',
         email: '',
         username: '',
         firstName: '',
@@ -28,7 +28,7 @@ const useAuth = defineStore('auth', {
   },
   getters: {
     refreshable(state) {
-      return !state.refresh_attempted;
+      return !state.refreshAttempted;
     },
     loggedIn(state) {
       return state.token !== undefined;
@@ -46,23 +46,24 @@ const useAuth = defineStore('auth', {
       } as ToastMessageOptions);
     },
 
-    async refreshAuth() {
+    async refreshAuth(route: RouteLocationNormalized) {
       try {
-        const { access, user } = await refreshAuth();
+        const { access, user } = await refreshAuth(Boolean(route.meta.fetchUser));
         this.token = access;
         this.setUser(user);
       } catch (e) {
         // login required
       }
-      this.refresh_attempted = true;
+      this.refreshAttempted = true;
     },
 
     async login(username: string, password: string) {
-      const { access, user } = await loginWithCredentials(username, password);
+      const { query } = router.currentRoute.value;
+      const fetchUser = query.redirect?.includes('account');
+      const { access, user } = await loginWithCredentials(username, password, fetchUser);
       this.token = access;
       this.setUser(user);
 
-      const { query } = router.currentRoute.value;
       query.redirect
         ? router.push({ path: decodeURIComponent(String(query.redirect)) })
         : router.push({ name: 'account' });
@@ -105,10 +106,15 @@ const useAuth = defineStore('auth', {
       this.addToast('Logout successful');
     },
 
-    setUser(user: User | undefined) {
+    setUser(user: User) {
       if (user) {
         this.user = user;
       }
+    },
+
+    async getUser() {
+      const user = await getUser();
+      this.setUser(user);
     },
   },
 });
