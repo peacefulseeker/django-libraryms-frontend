@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+  import { isAxiosError } from 'axios';
   import Button from 'primevue/button';
   import InputText from 'primevue/inputtext';
   import Password from 'primevue/password';
@@ -6,7 +7,6 @@
 
   import Spinner from '@/components/Spinner.vue';
   import useAuth from '@/stores/auth';
-  import { APIError } from '@/types/axios';
 
   const username = ref<Ref | null>(null);
   const usernameError = ref<Ref | null>(null);
@@ -38,7 +38,7 @@
       });
       loading.value = false;
     } catch (error) {
-      if (error instanceof APIError) {
+      if (isAxiosError(error)) {
         const { password, username, email } = error?.response?.data || {};
         passwordError.value = password ? password[0] : null;
         usernameError.value = username ? username[0] : null;
