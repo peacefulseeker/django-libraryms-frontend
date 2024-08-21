@@ -1,11 +1,11 @@
 <script setup lang="ts">
-  import LoginForm from '@/components/auth/LoginForm.vue';
+  import RegisterForm from '@/components/auth/RegisterForm.vue';
   import Banner from '@/components/HeroBanner.vue';
 </script>
 
 <template #banner>
   <Banner>
-    <h2 class="mb-4">Login</h2>
-    <LoginForm />
+    <h2 class="mb-5">Registration request</h2>
+    <RegisterForm />
   </Banner>
 </template>

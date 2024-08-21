@@ -12,6 +12,7 @@ const HomeView = () => import('@/views/HomeView.vue');
 const AccountView = () => import('@/views/AccountView.vue');
 const ReservationsView = () => import('@/views/Reservations.vue');
 const LoginView = () => import('@/views/LoginView.vue');
+const RegisterView = () => import('@/views/RegisterView.vue');
 
 const BookView = () => import('@/views/BookView.vue');
 const BooksView = () => import('@/views/BooksView.vue');
@@ -52,6 +53,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginView,
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: RegisterView,
   },
   {
     path: '/books',

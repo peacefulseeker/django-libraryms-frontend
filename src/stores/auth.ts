@@ -2,9 +2,9 @@ import { defineStore } from 'pinia';
 import { ToastSeverity } from 'primevue/api';
 import type { ToastMessageOptions } from 'primevue/toast';
 
+import { clearToken, loginWithCredentials, refreshAuth, registerMember } from '@/api/auth';
 import router from '@/router';
-import type { User } from '@/types/auth';
-import { loginWithCredentials, clearToken, refreshAuth } from '@/api/auth';
+import type { RegistrationCredentials, User } from '@/types/auth';
 
 interface AuthStoreState {
   token: string | undefined;
@@ -38,11 +38,11 @@ const useAuth = defineStore('auth', {
     },
   },
   actions: {
-    addToast(detail: string, severity = ToastSeverity.SUCCESS) {
+    addToast(detail: string, life = 3000, severity = ToastSeverity.SUCCESS) {
       window.$toast.add({
         severity,
-        detail: detail,
-        life: 3000,
+        detail,
+        life,
       } as ToastMessageOptions);
     },
 
@@ -68,6 +68,30 @@ const useAuth = defineStore('auth', {
         : router.push({ name: 'account' });
 
       this.addToast('Login successful');
+    },
+
+    async register({
+      username,
+      email,
+      password,
+      passwordConfirm,
+      firstName,
+      lastName,
+    }: RegistrationCredentials) {
+      const { registrationCode } = await registerMember({
+        username,
+        firstName,
+        lastName,
+        email,
+        password,
+        passwordConfirm,
+      });
+
+      this.addToast(
+        `Your registation request(code: ${registrationCode}) received and will be reviewed soon`,
+        6000,
+      );
+      router.push({ name: 'home' });
     },
 
     logout() {
