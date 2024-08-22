@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
-import type { ToastMessageOptions } from 'primevue/toast';
 import { ToastSeverity } from 'primevue/api';
+import type { ToastMessageOptions } from 'primevue/toast';
 
-import type { BookEnqueued, BookInList, BookReserved } from '@/types/books';
 import { getBooks } from '@/api/books';
+import type { BookEnqueued, BookInList, BookReserved } from '@/types/books';
 
 interface State {
   items: BookInList[];
@@ -39,19 +39,12 @@ const useBooks = defineStore('books', {
       this.available = books;
     },
 
-    setMemberReserved(books: BookReserved[] | BookEnqueued[]): void {
-      const reserved = [];
-      const enqueued = [];
-      for (const book of books) {
-        if (book.reservationId) {
-          reserved.push(book as BookReserved);
-        } else {
-          enqueued.push(book as BookEnqueued);
-        }
-      }
+    setMemberReserved(books: BookReserved[]): void {
+      this.reserved = books;
+    },
 
-      this.reserved = reserved;
-      this.enqueued = enqueued;
+    setMemberEnqueued(books: BookEnqueued[]): void {
+      this.enqueued = books;
     },
 
     async list(): Promise<BookInList[]> {
@@ -77,7 +70,12 @@ const useBooks = defineStore('books', {
 
     async listReservedByMember(): Promise<void> {
       const books = await getBooks({ reservedByMe: true });
-      this.setMemberReserved(books as BookReserved[] | BookEnqueued[]);
+      this.setMemberReserved(books as BookReserved[]);
+    },
+
+    async listEnqueuedByMember(): Promise<void> {
+      const books = await getBooks({ enqueuedByMe: true });
+      this.setMemberEnqueued(books as BookEnqueued[]);
     },
   },
 });

@@ -2,10 +2,10 @@
   import { ref, watch } from 'vue';
   import { useRouter } from 'vue-router';
 
-  import useBooks from '@/stores/books';
   import BookList from '@/components/BookList.vue';
-  import Spinner from '@/components/Spinner.vue';
   import Banner from '@/components/HeroBanner.vue';
+  import Spinner from '@/components/Spinner.vue';
+  import useBooks from '@/stores/books';
 
   const loading = ref(true);
   const hasReservations = ref(false);
@@ -14,6 +14,7 @@
 
   const fetchReservedBooks = async () => {
     await books.listReservedByMember();
+    await books.listEnqueuedByMember();
     hasReservations.value = books.reserved.length > 0 || books.enqueued.length > 0;
     loading.value = false;
   };

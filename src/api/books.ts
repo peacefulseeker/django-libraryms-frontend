@@ -1,6 +1,5 @@
 import axios from '@/axios';
-
-import { type BookInList, type Book, type BookReserved, type BookEnqueued } from '@/types/books';
+import { type Book, type BookEnqueued, type BookInList, type BookReserved } from '@/types/books';
 
 type OrderResponse = {
   orderId: number;
@@ -12,13 +11,19 @@ export interface BookQueryParams {
   query?: string;
   available?: boolean;
   reservedByMe?: boolean;
+  enqueuedByMe?: boolean;
 }
 
 type OrderCancelResponse = {
   detail: string;
 };
 
-export const getBooks = async ({ query, available, reservedByMe }: BookQueryParams = {}) => {
+export const getBooks = async ({
+  query,
+  available,
+  reservedByMe,
+  enqueuedByMe,
+}: BookQueryParams = {}) => {
   let url = `/api/v1/books/`;
   if (query) {
     url += `?q=${query}`;
@@ -26,6 +31,8 @@ export const getBooks = async ({ query, available, reservedByMe }: BookQueryPara
     url += `?available`;
   } else if (reservedByMe) {
     url += `?reserved_by_me`;
+  } else if (enqueuedByMe) {
+    url += `?enqueued_by_me`;
   }
 
   return (await axios.get(url)).data as BookInList[] | BookReserved[] | BookEnqueued[];
