@@ -19,24 +19,24 @@ export interface Book {
   isbn: string;
   pages: number;
   pagesDescription: string;
-  coverImageUrl?: string;
-  reservationTerm?: Date;
+  coverImageUrl: string | null;
+  amountInQueue: number;
+  reservationTerm: Date | null;
   isAvailable: boolean;
   isIssued: boolean;
   isReserved: boolean;
-  isIssuedToMember: boolean;
-  isEnqueuedByMember: boolean;
-  isReservedByMember: boolean;
-  isMaxReservationsReached: boolean;
-  isMaxEnqueuedOrdersReached: boolean;
-  amountInQueue: number;
+
+  isIssuedToMember?: boolean;
+  isEnqueuedByMember?: boolean;
+  isReservedByMember?: boolean;
+  isMaxReservationsReached?: boolean;
+  isMaxEnqueuedOrdersReached?: boolean;
 }
 export interface BookInList {
   id: number;
   author: Author;
   title: string;
-  coverImageUrl?: string;
-  isIssued?: boolean;
+  coverImageUrl: string | null;
   reservationTerm?: Date;
   reservationId?: number;
   amountInQueue?: number;
@@ -45,8 +45,6 @@ export interface BookInList {
 export interface BookReserved extends BookInList {
   reservationTerm: Date;
   reservationId: number;
-  isIssued: boolean;
-  amountInQueue: number;
 }
 
 export interface BookEnqueued extends BookInList {
