@@ -52,6 +52,21 @@ export const registerMember = async ({
   return (await axios.post(url, data)).data as RegistrationResponse;
 };
 
+export const changePassword = async (
+  passwordCurrent: string,
+  passwordNew: string,
+  passwordNewConfirm: string,
+): Promise<void> => {
+  const url = `/api/v1/auth/password/change/`;
+  const data = {
+    passwordCurrent,
+    passwordNew,
+    passwordNewConfirm,
+  };
+
+  return (await axios.put(url, data)).data as void;
+};
+
 export const clearToken = async (): Promise<void> => {
   const url = `/api/v1/auth/token/`;
   await axios.delete(url);

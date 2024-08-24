@@ -3,7 +3,14 @@ import { ToastSeverity } from 'primevue/api';
 import type { ToastMessageOptions } from 'primevue/toast';
 import type { RouteLocationNormalized } from 'vue-router';
 
-import { clearToken, getUser, loginWithCredentials, refreshAuth, registerMember } from '@/api/auth';
+import {
+  changePassword,
+  clearToken,
+  getUser,
+  loginWithCredentials,
+  refreshAuth,
+  registerMember,
+} from '@/api/auth';
 import router from '@/router';
 import type { RegistrationCredentials, User } from '@/types/auth';
 
@@ -93,6 +100,16 @@ const useAuth = defineStore('auth', {
         6000,
       );
       router.push({ name: 'home' });
+    },
+
+    async changePassword(
+      passwordCurrent: string,
+      passwordNew: string,
+      passwordNewConfirm: string,
+    ): Promise<void> {
+      await changePassword(passwordCurrent, passwordNew, passwordNewConfirm);
+      this.addToast('Password changed succesfully');
+      router.push({ name: 'account' });
     },
 
     logout() {

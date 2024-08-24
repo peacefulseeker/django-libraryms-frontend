@@ -29,6 +29,7 @@
       <p>Your email: {{ auth.user.email }}</p>
       <p>Your first name: {{ auth.user.firstName }}</p>
       <p>Your last name: {{ auth.user.lastName }}</p>
+      <a class="link" @click="router.push({ name: 'change_password' })">Change password</a> <br />
       <Button class="mt-4" @click="router.push({ name: 'reservations' })">View reservations</Button>
     </div>
   </main>

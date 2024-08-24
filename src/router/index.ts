@@ -10,6 +10,7 @@ import useAuth from '@/stores/auth';
 
 const HomeView = () => import('@/views/HomeView.vue');
 const AccountView = () => import('@/views/AccountView.vue');
+const ChangePasswordView = () => import('@/views/ChangePasswordView.vue');
 const ReservationsView = () => import('@/views/Reservations.vue');
 const LoginView = () => import('@/views/LoginView.vue');
 const RegisterView = () => import('@/views/RegisterView.vue');
@@ -80,6 +81,12 @@ const routes = [
     name: 'account',
     meta: { authRequired: true, fetchUser: true },
     component: AccountView,
+  },
+  {
+    path: '/account/change_password',
+    name: 'change_password',
+    meta: { authRequired: true },
+    component: ChangePasswordView,
   },
   {
     path: '/account/reservations',
