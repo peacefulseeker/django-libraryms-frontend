@@ -21,7 +21,14 @@
   const loading = ref(false);
 
   const canSubmit = computed(() => {
-    return username.value && password.value && passwordConfirm.value && email.value;
+    return (
+      !loading.value &&
+      !hasError.value &&
+      username.value &&
+      password.value &&
+      passwordConfirm.value &&
+      email.value
+    );
   });
 
   const register = async () => {
@@ -64,7 +71,7 @@
       :invalid="!!usernameError"
       :disabled="loading"
       @input="clearError" />
-    <span v-if="usernameError" class="input-error text-red-500">{{ usernameError }}</span>
+    <span v-if="usernameError" class="input-error">{{ usernameError }}</span>
 
     <InputText
       id="email"
@@ -77,7 +84,7 @@
       :disabled="loading"
       @input="clearError"
       class="mt-4" />
-    <span v-if="emailError" class="input-error text-red-500">{{ emailError }}</span>
+    <span v-if="emailError" class="input-error">{{ emailError }}</span>
     <InputText
       id="firstName"
       v-model="firstName"
@@ -109,7 +116,7 @@
       @input="clearError"
       :invalid="!!passwordError"
       :disabled="loading" />
-    <Button class="mt-4" :disabled="loading || !canSubmit" label="Submit" type="submit" />
+    <Button class="mt-4" :disabled="!canSubmit" label="Submit" type="submit" />
     <Spinner v-if="loading" class="absolute h-full w-full" />
     <p class="mt-3 text-xs">
       Upon submission your request will be sent to the administrator for approval. Afterwards you
