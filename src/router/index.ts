@@ -1,6 +1,7 @@
 import {
   createRouter,
   createWebHistory,
+  type RouteLocation,
   type RouteLocationNormalized,
   type RouteLocationNormalizedLoaded,
   type RouterOptions,
@@ -11,6 +12,8 @@ import useAuth from '@/stores/auth';
 const HomeView = () => import('@/views/HomeView.vue');
 const AccountView = () => import('@/views/AccountView.vue');
 const ChangePasswordView = () => import('@/views/ChangePasswordView.vue');
+const ResetPasswordView = () => import('@/views/ResetPasswordView.vue');
+const PasswordConfirmView = () => import('@/views/PasswordConfirmView.vue');
 const ReservationsView = () => import('@/views/Reservations.vue');
 const LoginView = () => import('@/views/LoginView.vue');
 const RegisterView = () => import('@/views/RegisterView.vue');
@@ -61,6 +64,16 @@ const routes = [
     component: RegisterView,
   },
   {
+    path: '/reset-password',
+    name: 'reset_password',
+    component: ResetPasswordView,
+  },
+  {
+    path: '/reset-password/:token',
+    name: 'reset_password_confirm',
+    component: PasswordConfirmView,
+  },
+  {
     path: '/books',
     name: 'books',
     component: BooksView,
@@ -83,7 +96,7 @@ const routes = [
     component: AccountView,
   },
   {
-    path: '/account/change_password',
+    path: '/account/change-password',
     name: 'change_password',
     meta: { authRequired: true },
     component: ChangePasswordView,

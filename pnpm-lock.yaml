@@ -81,9 +81,6 @@ importers:
       npm-run-all2:
         specifier: ^6.2.0
         version: 6.2.2
-      postcss:
-        specifier: ^8.4.39
-        version: 8.4.39
       prettier:
         specifier: ^3.2.5
         version: 3.3.3

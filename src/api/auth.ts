@@ -67,6 +67,30 @@ export const changePassword = async (
   return (await axios.put(url, data)).data as void;
 };
 
+export const requestPasswordReset = async (email: string): Promise<void> => {
+  const url = `/api/v1/auth/password/reset/`;
+  const data = {
+    email,
+  };
+
+  return (await axios.post(url, data)).data as void;
+};
+
+export const confirmPasswordReset = async (
+  token: string,
+  newPassword: string,
+  newPasswordConfirm: string,
+): Promise<void> => {
+  const url = `/api/v1/auth/password/reset-confirm/`;
+  const data = {
+    token,
+    newPassword,
+    newPasswordConfirm,
+  };
+
+  return (await axios.post(url, data)).data as void;
+};
+
 export const clearToken = async (): Promise<void> => {
   const url = `/api/v1/auth/token/`;
   await axios.delete(url);

@@ -6,10 +6,12 @@ import type { RouteLocationNormalized } from 'vue-router';
 import {
   changePassword,
   clearToken,
+  confirmPasswordReset,
   getUser,
   loginWithCredentials,
   refreshAuth,
   registerMember,
+  requestPasswordReset,
 } from '@/api/auth';
 import router from '@/router';
 import type { RegistrationCredentials, User } from '@/types/auth';
@@ -110,6 +112,25 @@ const useAuth = defineStore('auth', {
       await changePassword(passwordCurrent, passwordNew, passwordNewConfirm);
       this.addToast('Password changed succesfully');
       router.push({ name: 'account' });
+    },
+
+    async requestPasswordReset(email: string): Promise<void> {
+      await requestPasswordReset(email);
+      this.addToast(
+        'If member with such email exists, password reset link will be sent to members inbox ',
+        6000,
+      );
+      router.push({ name: 'home' });
+    },
+
+    async confirmPasswordReset(
+      token: string,
+      newPassword: string,
+      newPasswordConfirm: string,
+    ): Promise<void> {
+      await confirmPasswordReset(token, newPassword, newPasswordConfirm);
+      this.addToast('Password reset successful. You can now login back', 6000);
+      router.push({ name: 'login' });
     },
 
     logout() {
