@@ -38,7 +38,7 @@
 </script>
 
 <template>
-  <form @submit.prevent="login" class="relative m-auto flex w-96 flex-col max-sm:w-56">
+  <form @submit.prevent="login" class="banner-form">
     <InputText
       id="username"
       :type="isEmail ? 'email' : 'text'"
@@ -63,7 +63,7 @@
       </a>
     </div>
     <Button class="mt-4" :disabled="!canSubmit || loading" label="Submit" type="submit" />
-    <Spinner v-if="loading" class="absolute h-full w-full" />
+    <Spinner v-if="loading" class="spinner-form" />
     <div class="mt-3 text-center">
       Don't have account yet?
       <a href="" class="link" @click.prevent="router.push({ name: 'register' })">

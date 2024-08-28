@@ -62,7 +62,7 @@
 </script>
 
 <template>
-  <form @submit.prevent="register" class="relative m-auto flex w-96 flex-col max-sm:w-56">
+  <form @submit.prevent="register" class="banner-form">
     <InputText
       id="username"
       v-model="username"
@@ -106,7 +106,7 @@
       @input="clearError"
       :invalid="!!passwordError"
       :disabled="loading" />
-    <span v-if="passwordError" class="input-error text-red-500">{{ passwordError }}</span>
+    <span v-if="passwordError" class="input-error">{{ passwordError }}</span>
     <Password
       v-model="passwordConfirm"
       placeholder="Password confirmation"
@@ -117,7 +117,7 @@
       :invalid="!!passwordError"
       :disabled="loading" />
     <Button class="mt-4" :disabled="!canSubmit" label="Submit" type="submit" />
-    <Spinner v-if="loading" class="absolute h-full w-full" />
+    <Spinner v-if="loading" class="spinner-form" />
     <p class="mt-3 text-xs">
       Upon submission your request will be sent to the administrator for approval. Afterwards you
       will need to arrive to the library and present your ID card to the librarian for verification.

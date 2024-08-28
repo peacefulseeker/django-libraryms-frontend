@@ -52,7 +52,7 @@
 </script>
 
 <template>
-  <form @submit.prevent="changePassword" class="relative m-auto flex w-96 flex-col max-sm:w-56">
+  <form @submit.prevent="changePassword" class="banner-form">
     <Password
       v-model="passwordCurrent"
       autocomplete="password"
@@ -83,7 +83,7 @@
       :disabled="loading" />
     <span v-if="passwordNewConfirmError" class="input-error">{{ passwordNewConfirmError }}</span>
     <Button class="mt-4" :disabled="!canSubmit" label="Submit" type="submit" />
-    <Spinner v-if="loading" class="absolute h-full w-full" />
+    <Spinner v-if="loading" class="spinner-form" />
     <a
       href=""
       @click.prevent="router.push({ name: 'account' })"

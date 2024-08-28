@@ -147,3 +147,11 @@ main {
 .input-error {
   @apply text-xs text-red-500;
 }
+
+.banner-form {
+  @apply relative m-auto flex w-96 flex-col max-sm:w-56;
+}
+
+.spinner-form {
+  @apply absolute h-full w-full;
+}

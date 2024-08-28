@@ -43,9 +43,7 @@
 </script>
 
 <template>
-  <form
-    @submit.prevent="confirmPasswordReset"
-    class="relative m-auto flex w-96 flex-col max-sm:w-56">
+  <form @submit.prevent="confirmPasswordReset" class="banner-form">
     <Password
       v-model="newPassword"
       placeholder="New password"
@@ -66,7 +64,7 @@
       :invalid="!!newPasswordError"
       :disabled="loading" />
     <Button class="mt-4" :disabled="!canSubmit || loading" label="Submit" type="submit" />
-    <Spinner v-if="loading" class="absolute h-full w-full" />
+    <Spinner v-if="loading" class="spinner-form" />
   </form>
 </template>
 

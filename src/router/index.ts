@@ -64,6 +64,16 @@ const routes = [
     component: RegisterView,
   },
   {
+    path: '/reset-password',
+    name: 'reset_password',
+    component: ResetPasswordView,
+  },
+  {
+    path: '/reset-password/:token',
+    name: 'reset_password_confirm',
+    component: PasswordConfirmView,
+  },
+  {
     path: '/books',
     name: 'books',
     component: BooksView,
@@ -90,23 +100,6 @@ const routes = [
     name: 'change_password',
     meta: { authRequired: true },
     component: ChangePasswordView,
-  },
-  {
-    path: '/account/reset-password',
-    name: 'reset_password',
-    component: ResetPasswordView,
-  },
-  {
-    path: '/account/reset-password/:token',
-    name: 'reset_password_confirm',
-    component: PasswordConfirmView,
-    // beforeEnter: (to: RouteLocation) => {
-    //   const token = to.params.token;
-    //   console.log(token);
-    //   // if (token.length < 32) {
-    //   //   return { name: 'reset_password' };
-    //   // }
-    // },
   },
   {
     path: '/account/reservations',

@@ -30,7 +30,7 @@
 </script>
 
 <template>
-  <form @submit.prevent="resetPassword" class="relative m-auto flex w-96 flex-col max-sm:w-56">
+  <form @submit.prevent="resetPassword" class="banner-form">
     <InputText
       id="email"
       type="email"
@@ -42,7 +42,7 @@
       @input="clearError"
       class="mb-4" />
     <Button class="mt-4" :disabled="!canSubmit || loading" label="Submit" type="submit" />
-    <Spinner v-if="loading" class="absolute h-full w-full" />
+    <Spinner v-if="loading" class="spinner-form" />
   </form>
 </template>
 
