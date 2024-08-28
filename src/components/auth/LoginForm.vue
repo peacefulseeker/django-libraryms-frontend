@@ -53,16 +53,22 @@
       v-model="password"
       autocomplete="password"
       placeholder="Password"
-      class="mb-4"
       :feedback="false"
       @input="clearError"
       :invalid="hasError"
       :disabled="loading" />
-    <Button :disabled="!canSubmit || loading" label="Submit" type="submit" />
+    <div v-if="hasError" class="text-center">
+      <a href="" class="link" @click.prevent="router.push({ name: 'reset_password' })">
+        Forgot your password?
+      </a>
+    </div>
+    <Button class="mt-4" :disabled="!canSubmit || loading" label="Submit" type="submit" />
     <Spinner v-if="loading" class="absolute h-full w-full" />
     <div class="mt-3 text-center">
-      Don't have account yet? Request registration
-      <a href="" class="link" @click.prevent="router.push({ name: 'register' })">here</a>
+      Don't have account yet?
+      <a href="" class="link" @click.prevent="router.push({ name: 'register' })">
+        Request registration
+      </a>
     </div>
   </form>
 </template>

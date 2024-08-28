@@ -92,9 +92,3 @@
     </a>
   </form>
 </template>
-
-<style scoped>
-  .input-error {
-    @apply text-xs text-red-500;
-  }
-</style>

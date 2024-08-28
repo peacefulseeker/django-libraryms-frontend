@@ -143,3 +143,7 @@ main {
 .with-bg-gradient {
   background: radial-gradient(circle, rgb(208 251 255) 0%, rgb(238 246 255) 100%);
 }
+
+.input-error {
+  @apply text-xs text-red-500;
+}
