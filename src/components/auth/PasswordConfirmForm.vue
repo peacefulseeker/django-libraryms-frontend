@@ -11,11 +11,14 @@
   const newPassword = ref<any>(null);
   const newPasswordError = ref<Ref | null>(null);
   const newPasswordConfirm = ref<any>(null);
+  const newPasswordConfirmError = ref<Ref | null>(null);
   const hasError = ref(false);
   const loading = ref(false);
   const route = useRoute();
 
-  const canSubmit = computed(() => newPassword.value && newPasswordConfirm.value);
+  const canSubmit = computed(() => {
+    return !hasError.value && !loading.value && newPassword.value && newPasswordConfirm.value;
+  });
 
   const confirmPasswordReset = async () => {
     try {
@@ -29,8 +32,9 @@
       loading.value = false;
     } catch (error) {
       if (isAxiosError(error)) {
-        const { newPassword } = error?.response?.data || {};
+        const { newPassword, newPasswordConfirm } = error?.response?.data || {};
         newPasswordError.value = newPassword ? newPassword[0] : null;
+        newPasswordConfirmError.value = newPasswordConfirm ? newPasswordConfirm[0] : null;
       }
       hasError.value = true;
       loading.value = false;
@@ -63,7 +67,8 @@
       @input="clearError"
       :invalid="!!newPasswordError"
       :disabled="loading" />
-    <Button class="mt-4" :disabled="!canSubmit || loading" label="Submit" type="submit" />
+    <span v-if="newPasswordConfirmError" class="input-error">{{ newPasswordConfirmError }}</span>
+    <Button class="mt-4" :disabled="!canSubmit" label="Submit" type="submit" />
     <Spinner v-if="loading" class="spinner-form" />
   </form>
 </template>

@@ -14,7 +14,9 @@
   const loading = ref(false);
   const router = useRouter();
 
-  const canSubmit = computed(() => username.value && password.value);
+  const canSubmit = computed(
+    () => !hasError.value && !loading.value && username.value && password.value,
+  );
 
   const login = async () => {
     try {
@@ -62,7 +64,7 @@
         Forgot your password?
       </a>
     </div>
-    <Button class="mt-4" :disabled="!canSubmit || loading" label="Submit" type="submit" />
+    <Button class="mt-4" :disabled="!canSubmit" label="Submit" type="submit" />
     <Spinner v-if="loading" class="spinner-form" />
     <div class="mt-3 text-center">
       Don't have account yet?

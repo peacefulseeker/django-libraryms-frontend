@@ -10,7 +10,7 @@
   const hasError = ref(false);
   const loading = ref(false);
 
-  const canSubmit = computed(() => email.value);
+  const canSubmit = computed(() => !hasError.value && !loading.value && email.value);
 
   const resetPassword = async () => {
     try {
@@ -41,7 +41,7 @@
       :disabled="loading"
       @input="clearError"
       class="mb-4" />
-    <Button class="mt-4" :disabled="!canSubmit || loading" label="Submit" type="submit" />
+    <Button class="mt-4" :disabled="!canSubmit" label="Submit" type="submit" />
     <Spinner v-if="loading" class="spinner-form" />
   </form>
 </template>
