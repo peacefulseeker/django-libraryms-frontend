@@ -1,7 +1,6 @@
 import {
   createRouter,
   createWebHistory,
-  type RouteLocation,
   type RouteLocationNormalized,
   type RouteLocationNormalizedLoaded,
   type RouterOptions,

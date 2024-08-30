@@ -133,7 +133,7 @@ const useAuth = defineStore('auth', {
       router.push({ name: 'login' });
     },
 
-    logout() {
+    logout(toastMessage: string = 'Logout successful', toastSeverity = ToastSeverity.SUCCESS) {
       this.token = undefined;
       clearToken();
       const route = router.currentRoute.value;
@@ -141,7 +141,7 @@ const useAuth = defineStore('auth', {
         router.push({ name: 'login', query: { redirect: route.fullPath } });
       }
 
-      this.addToast('Logout successful');
+      this.addToast(toastMessage, 3000, toastSeverity);
     },
 
     setUser(user: User) {
