@@ -10,9 +10,10 @@
 
   const loading = ref(true);
   const hasReservations = ref(false);
-  const extensionRequested = ref(false);
+  const extensionProcessing = ref(false);
   const books = useBooks();
   const router = useRouter();
+  const book = useBook();
 
   const fetchReservedBooks = async () => {
     await books.listReservedByMember();
@@ -22,14 +23,27 @@
   };
   watch(() => null, fetchReservedBooks, { immediate: true });
 
-  const onExtendReservation = async (bookId: number): Promise<void> => {
-    const book = useBook();
+  const swapReservationExtendProcessing = () => {
+    extensionProcessing.value = !extensionProcessing.value;
+  };
+
+  const onReservationExtend = async (bookId: number): Promise<void> => {
     try {
-      extensionRequested.value = true;
+      swapReservationExtendProcessing();
       await book.extendReservation(bookId);
       await books.listReservedByMember();
     } finally {
-      extensionRequested.value = false;
+      swapReservationExtendProcessing();
+    }
+  };
+
+  const onReservationExtendCancel = async (bookId: number): Promise<void> => {
+    try {
+      swapReservationExtendProcessing();
+      await book.cancelExtendReservation(bookId);
+      await books.listReservedByMember();
+    } finally {
+      swapReservationExtendProcessing();
     }
   };
 </script>
@@ -49,8 +63,9 @@
         <h2 class="mb-4 text-center">Reserved books</h2>
         <BookList
           :books="books.reserved"
-          :onExtendReservation="onExtendReservation"
-          :extensionRequested="extensionRequested" />
+          :onReservationExtend="onReservationExtend"
+          :onReservationExtendCancel="onReservationExtendCancel"
+          :extensionProcessing="extensionProcessing" />
       </div>
       <div v-if="books.enqueued.length">
         <h2 class="mb-4 text-center">Enqueued books</h2>

@@ -1,13 +1,15 @@
 <script setup lang="ts">
   import BookCover from './BookCover.vue';
+  import CancelButton from './buttons/CancelButton.vue';
   import PrimaryButton from './buttons/PrimaryButton.vue';
 
   import type { BookEnqueued, BookInList, BookReserved } from '@/types/books';
 
   defineProps<{
     books: BookInList[] | BookReserved[] | BookEnqueued[];
-    onExtendReservation?: (_bookId: number) => Promise<void>;
-    extensionRequested?: boolean;
+    onReservationExtend?: (_bookId: number) => Promise<void>;
+    onReservationExtendCancel?: (_bookId: number) => Promise<void>;
+    extensionProcessing?: boolean;
   }>();
 </script>
 
@@ -27,11 +29,17 @@
             Issued to you until: <br />
             {{ book.reservationTerm }}
             <PrimaryButton
-              v-if="book.isExtendable"
-              :disabled="extensionRequested"
-              @click="onExtendReservation && onExtendReservation(book.id)">
+              v-if="book.reservationExtendable"
+              :disabled="extensionProcessing"
+              @click="onReservationExtend && onReservationExtend(book.id)">
               Extend reservation
             </PrimaryButton>
+            <CancelButton
+              v-if="book.hasRequestedExtension"
+              :disabled="extensionProcessing"
+              @click="onReservationExtendCancel && onReservationExtendCancel(book.id)">
+              Revoke extension
+            </CancelButton>
           </span>
           <span v-else>
             Issued to reader until: <br />

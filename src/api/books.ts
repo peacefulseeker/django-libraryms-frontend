@@ -14,10 +14,6 @@ export interface BookQueryParams {
   enqueuedByMe?: boolean;
 }
 
-type OrderCancelResponse = {
-  detail: string;
-};
-
 type ReservationExtendResponse = {
   detail: string;
 };
@@ -57,11 +53,17 @@ export const orderBook = async (id: number) => {
 export const cancelBookOrder = async (id: number) => {
   const url = `/api/v1/books/${id}/order/`;
 
-  return (await axios.delete(url)).data as OrderCancelResponse;
+  return (await axios.delete(url)).data as void;
 };
 
 export const extendReservation = async (id: number) => {
   const url = `/api/v1/books/${id}/extend/`;
 
   return (await axios.post(url)).data as ReservationExtendResponse;
+};
+
+export const cancelExtendReservation = async (id: number) => {
+  const url = `/api/v1/books/${id}/extend/`;
+
+  return (await axios.delete(url)).data as void;
 };
