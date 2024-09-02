@@ -40,11 +40,13 @@ export interface BookInList {
   reservationTerm?: Date;
   reservationId?: number;
   amountInQueue?: number;
+  isExtendable?: boolean;
 }
 
 export interface BookReserved extends BookInList {
   reservationTerm: Date;
   reservationId: number;
+  isExtendable: boolean;
 }
 
 export interface BookEnqueued extends BookInList {

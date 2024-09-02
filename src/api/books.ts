@@ -18,6 +18,10 @@ type OrderCancelResponse = {
   detail: string;
 };
 
+type ReservationExtendResponse = {
+  detail: string;
+};
+
 export const getBooks = async ({
   query,
   available,
@@ -54,4 +58,10 @@ export const cancelBookOrder = async (id: number) => {
   const url = `/api/v1/books/${id}/order/`;
 
   return (await axios.delete(url)).data as OrderCancelResponse;
+};
+
+export const extendReservation = async (id: number) => {
+  const url = `/api/v1/books/${id}/extend/`;
+
+  return (await axios.post(url)).data as ReservationExtendResponse;
 };

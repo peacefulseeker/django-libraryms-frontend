@@ -1,9 +1,13 @@
 <script setup lang="ts">
-  import { type BookEnqueued, type BookInList, type BookReserved } from '@/types/books';
   import BookCover from './BookCover.vue';
+  import PrimaryButton from './buttons/PrimaryButton.vue';
+
+  import type { BookEnqueued, BookInList, BookReserved } from '@/types/books';
 
   defineProps<{
     books: BookInList[] | BookReserved[] | BookEnqueued[];
+    onExtendReservation?: (_bookId: number) => Promise<void>;
+    extensionRequested?: boolean;
   }>();
 </script>
 
@@ -22,6 +26,12 @@
           <span v-if="book.reservationId">
             Issued to you until: <br />
             {{ book.reservationTerm }}
+            <PrimaryButton
+              v-if="book.isExtendable"
+              :disabled="extensionRequested"
+              @click="onExtendReservation && onExtendReservation(book.id)">
+              Extend reservation
+            </PrimaryButton>
           </span>
           <span v-else>
             Issued to reader until: <br />

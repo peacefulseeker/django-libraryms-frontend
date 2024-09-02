@@ -5,10 +5,12 @@
   import BookList from '@/components/BookList.vue';
   import Banner from '@/components/HeroBanner.vue';
   import Spinner from '@/components/Spinner.vue';
+  import useBook from '@/stores/book';
   import useBooks from '@/stores/books';
 
   const loading = ref(true);
   const hasReservations = ref(false);
+  const extensionRequested = ref(false);
   const books = useBooks();
   const router = useRouter();
 
@@ -19,6 +21,17 @@
     loading.value = false;
   };
   watch(() => null, fetchReservedBooks, { immediate: true });
+
+  const onExtendReservation = async (bookId: number): Promise<void> => {
+    const book = useBook();
+    try {
+      extensionRequested.value = true;
+      await book.extendReservation(bookId);
+      await books.listReservedByMember();
+    } finally {
+      extensionRequested.value = false;
+    }
+  };
 </script>
 
 <template>
@@ -34,7 +47,10 @@
       </h2>
       <div v-if="books.reserved.length" class="mb-20">
         <h2 class="mb-4 text-center">Reserved books</h2>
-        <BookList :books="books.reserved" />
+        <BookList
+          :books="books.reserved"
+          :onExtendReservation="onExtendReservation"
+          :extensionRequested="extensionRequested" />
       </div>
       <div v-if="books.enqueued.length">
         <h2 class="mb-4 text-center">Enqueued books</h2>
