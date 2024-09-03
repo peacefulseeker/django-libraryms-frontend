@@ -64,7 +64,7 @@ export const changePassword = async (
     passwordNewConfirm,
   };
 
-  return (await axios.put(url, data)).data as void;
+  return (await axios.put(url, data)).data;
 };
 
 export const requestPasswordReset = async (email: string): Promise<void> => {
@@ -73,7 +73,7 @@ export const requestPasswordReset = async (email: string): Promise<void> => {
     email,
   };
 
-  return (await axios.post(url, data)).data as void;
+  return (await axios.post(url, data)).data;
 };
 
 export const confirmPasswordReset = async (
@@ -88,7 +88,7 @@ export const confirmPasswordReset = async (
     newPasswordConfirm,
   };
 
-  return (await axios.post(url, data)).data as void;
+  return (await axios.post(url, data)).data;
 };
 
 export const clearToken = async (): Promise<void> => {
@@ -98,5 +98,5 @@ export const clearToken = async (): Promise<void> => {
 
 export const getUser = async (): Promise<User> => {
   const url = `/api/v1/auth/me/`;
-  return (await axios.get(url)).data as User;
+  return (await axios.get(url)).data;
 };

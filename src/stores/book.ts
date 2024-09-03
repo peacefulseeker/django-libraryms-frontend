@@ -74,8 +74,8 @@ const useBook = defineStore('book', {
     },
 
     async cancelExtendReservation(id: number): Promise<void> {
-      await cancelExtendReservation(id);
-      this.addToast('Reservation extension cancelled', ToastSeverity.WARN);
+      const { detail } = await cancelExtendReservation(id);
+      this.addToast(detail, ToastSeverity.WARN);
     },
   },
 });

@@ -1,9 +1,13 @@
 import axios from '@/axios';
-import { type Book, type BookEnqueued, type BookInList, type BookReserved } from '@/types/books';
+import type { Book, BookEnqueued, BookInList, BookReserved } from '@/types/books';
 
 type OrderResponse = {
   orderId: number;
   bookId: number;
+  detail: string;
+};
+
+type ReservationExtendResponse = {
   detail: string;
 };
 
@@ -14,16 +18,12 @@ export interface BookQueryParams {
   enqueuedByMe?: boolean;
 }
 
-type ReservationExtendResponse = {
-  detail: string;
-};
-
 export const getBooks = async ({
   query,
   available,
   reservedByMe,
   enqueuedByMe,
-}: BookQueryParams = {}) => {
+}: BookQueryParams = {}): Promise<BookInList[] | BookReserved[] | BookEnqueued[]> => {
   let url = `/api/v1/books/`;
   if (query) {
     url += `?q=${query}`;
@@ -35,35 +35,35 @@ export const getBooks = async ({
     url += `?enqueued_by_me`;
   }
 
-  return (await axios.get(url)).data as BookInList[] | BookReserved[] | BookEnqueued[];
+  return (await axios.get(url)).data;
 };
 
-export const getBook = async (id: number) => {
+export const getBook = async (id: number): Promise<Book> => {
   const url = `/api/v1/books/${id}/`;
 
-  return (await axios.get(url)).data as Book;
+  return (await axios.get(url)).data;
 };
 
-export const orderBook = async (id: number) => {
+export const orderBook = async (id: number): Promise<OrderResponse> => {
   const url = `/api/v1/books/${id}/order/`;
 
-  return (await axios.post(url)).data as OrderResponse;
+  return (await axios.post(url)).data;
 };
 
-export const cancelBookOrder = async (id: number) => {
+export const cancelBookOrder = async (id: number): Promise<void> => {
   const url = `/api/v1/books/${id}/order/`;
 
-  return (await axios.delete(url)).data as void;
+  return (await axios.delete(url)).data;
 };
 
-export const extendReservation = async (id: number) => {
+export const extendReservation = async (id: number): Promise<ReservationExtendResponse> => {
   const url = `/api/v1/books/${id}/extend/`;
 
-  return (await axios.post(url)).data as ReservationExtendResponse;
+  return (await axios.post(url)).data;
 };
 
-export const cancelExtendReservation = async (id: number) => {
+export const cancelExtendReservation = async (id: number): Promise<ReservationExtendResponse> => {
   const url = `/api/v1/books/${id}/extend/`;
 
-  return (await axios.delete(url)).data as void;
+  return (await axios.delete(url)).data;
 };
