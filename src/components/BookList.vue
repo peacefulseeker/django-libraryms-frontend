@@ -1,9 +1,15 @@
 <script setup lang="ts">
-  import { type BookEnqueued, type BookInList, type BookReserved } from '@/types/books';
   import BookCover from './BookCover.vue';
+  import CancelButton from './buttons/CancelButton.vue';
+  import PrimaryButton from './buttons/PrimaryButton.vue';
+
+  import type { BookEnqueued, BookInList, BookReserved } from '@/types/books';
 
   defineProps<{
     books: BookInList[] | BookReserved[] | BookEnqueued[];
+    onReservationExtend?: (_bookId: number) => Promise<void>;
+    onReservationExtendCancel?: (_bookId: number) => Promise<void>;
+    extensionProcessing?: boolean;
   }>();
 </script>
 
@@ -12,7 +18,7 @@
     class="justify-space-around m-auto flex flex-wrap max-md:justify-center md:w-2/3"
     style="gap: 20px">
     <li v-for="book in books" :key="book.id" class="book-item">
-      <RouterLink class="w-full" :to="{ name: 'book', params: { id: book.id } }">
+      <RouterLink class="w-full book-link" :to="{ name: 'book', params: { id: book.id } }">
         <BookCover :imageSrc="book.coverImageUrl" />
         <h3 class="mt-2 font-semibold">{{ book.title }}</h3>
       </RouterLink>
@@ -22,6 +28,18 @@
           <span v-if="book.reservationId">
             Issued to you until: <br />
             {{ book.reservationTerm }}
+            <PrimaryButton
+              v-if="book.reservationExtendable"
+              :disabled="extensionProcessing"
+              @click="onReservationExtend && onReservationExtend(book.id)">
+              Extend reservation
+            </PrimaryButton>
+            <CancelButton
+              v-if="book.hasRequestedExtension"
+              :disabled="extensionProcessing"
+              @click="onReservationExtendCancel && onReservationExtendCancel(book.id)">
+              Revoke extension
+            </CancelButton>
           </span>
           <span v-else>
             Issued to reader until: <br />
@@ -44,7 +62,7 @@
   .book-item {
     width: 160px;
 
-    &:hover .book-cover {
+    .book-link:hover .book-cover {
       &.no-cover {
         background-color: rgb(var(--primary-400));
       }

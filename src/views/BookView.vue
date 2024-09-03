@@ -45,19 +45,25 @@
 
   const onOrder = async (bookId: number) => {
     if (!bookOrderProcessing.value && checkAuth()) {
-      swapBookOrderProcessing();
-      await bookStore.order(bookId);
-      book.value = await bookStore.get(bookId);
-      swapBookOrderProcessing();
+      try {
+        swapBookOrderProcessing();
+        await bookStore.order(bookId);
+        book.value = await bookStore.get(bookId);
+      } finally {
+        swapBookOrderProcessing();
+      }
     }
   };
 
   const onOrderCancel = async (bookId: number) => {
     if (!bookOrderProcessing.value && checkAuth()) {
-      swapBookOrderProcessing();
-      await bookStore.orderCancel(bookId);
-      book.value = await bookStore.get(bookId);
-      swapBookOrderProcessing();
+      try {
+        swapBookOrderProcessing();
+        await bookStore.orderCancel(bookId);
+        book.value = await bookStore.get(bookId);
+      } finally {
+        swapBookOrderProcessing();
+      }
     }
   };
 

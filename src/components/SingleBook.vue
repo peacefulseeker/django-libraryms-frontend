@@ -1,9 +1,10 @@
 <script setup lang="ts">
-  import type { Book } from '@/types/books';
-  import useBook from '@/stores/book';
   import BookCover from '@/components/BookCover.vue';
-  import BookIcon from '@/components/icons/BookIcon.vue';
   import CancelButton from '@/components/buttons/CancelButton.vue';
+  import PrimaryButton from '@/components/buttons/PrimaryButton.vue';
+  import BookIcon from '@/components/icons/BookIcon.vue';
+  import useBook from '@/stores/book';
+  import type { Book } from '@/types/books';
 
   defineProps<{
     book: Book;
@@ -45,7 +46,7 @@
         </span>
       </div>
 
-      <button
+      <PrimaryButton
         v-if="bookStore.reservable"
         :disabled="
           book.isMaxReservationsReached || book.isMaxEnqueuedOrdersReached || orderProcessing
@@ -54,7 +55,7 @@
         class="transition-background-color mr-2 mt-2 rounded bg-primary-400 p-3 text-white enabled:hover:bg-primary-300 disabled:opacity-75">
         <span v-if="bookStore.queuable">Queue up</span>
         <span v-else>Reserve</span>
-      </button>
+      </PrimaryButton>
       <span v-if="book.isMaxReservationsReached && !bookStore.bookedByMember" class="block text-xs">
         Maximum reservations reached
       </span>

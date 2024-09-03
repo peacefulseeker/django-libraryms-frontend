@@ -39,12 +39,16 @@ export interface BookInList {
   coverImageUrl: string | null;
   reservationTerm?: Date;
   reservationId?: number;
+  reservationExtendable?: boolean;
+  hasRequestedExtension?: boolean;
   amountInQueue?: number;
 }
 
 export interface BookReserved extends BookInList {
   reservationTerm: Date;
   reservationId: number;
+  reservationExtendable: boolean;
+  hasRequestedExtension: boolean;
 }
 
 export interface BookEnqueued extends BookInList {

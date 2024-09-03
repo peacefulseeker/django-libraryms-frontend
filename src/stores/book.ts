@@ -1,9 +1,15 @@
-import { ToastSeverity } from 'primevue/api';
 import { defineStore } from 'pinia';
+import { ToastSeverity } from 'primevue/api';
 import type { ToastMessageOptions } from 'primevue/toast';
 
+import {
+  cancelBookOrder,
+  cancelExtendReservation,
+  extendReservation,
+  getBook,
+  orderBook,
+} from '@/api/books';
 import { type Book } from '@/types/books';
-import { getBook, orderBook, cancelBookOrder } from '@/api/books';
 
 interface State {
   book: Book;
@@ -54,12 +60,22 @@ const useBook = defineStore('book', {
 
     async orderCancel(id: number): Promise<void> {
       await cancelBookOrder(id);
-      this.addToast('Reservation cancelled', 'warn' as 'warn');
+      this.addToast('Reservation cancelled', ToastSeverity.WARN);
     },
 
     async get(id: number): Promise<Book> {
       this.book = await getBook(id);
       return this.book;
+    },
+
+    async extendReservation(id: number): Promise<void> {
+      const { detail } = await extendReservation(id);
+      this.addToast(detail);
+    },
+
+    async cancelExtendReservation(id: number): Promise<void> {
+      const { detail } = await cancelExtendReservation(id);
+      this.addToast(detail, ToastSeverity.WARN);
     },
   },
 });
