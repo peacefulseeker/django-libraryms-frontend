@@ -52,4 +52,6 @@ jobs:
           aws-region: eu-central-1
       - name: Deploy to S3
         run: |
-          aws s3 sync dist/ s3://django-libraryms/v/${{ env.CLOUDFRONT_ASSETS_VERSION }} --delete --acl public-read
+          TIMESTAMP=$(date +%Y%m%d%H%M)
+          VERSION=${TIMESTAMP}_${{ env.CLOUDFRONT_ASSETS_VERSION }}
+          aws s3 sync dist/ s3://django-libraryms/v/$VERSION --delete --acl public-read
