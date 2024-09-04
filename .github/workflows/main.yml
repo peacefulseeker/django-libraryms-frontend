@@ -8,9 +8,6 @@ on:
     branches:
       - main
 
-env:
-  GITHUB_CONTEXT: ${{ toJson(github) }}
-
 jobs:
   generate-assets-version:
     runs-on: ubuntu-latest
