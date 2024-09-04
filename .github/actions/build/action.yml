@@ -23,10 +23,9 @@ runs:
     - name: Install dependencies
       run: pnpm install
       shell: bash
-    - name: Generate assets version number
-      id: version
-      run: echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+    - name: Generate version number
+      run: echo "CLOUDFRONT_ASSETS_VERSION=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       shell: bash
     - name: Build
-      run: CLOUDFRONT_ASSETS_VERSION=${{ steps.version.outputs.version }} pnpm run build
+      run: pnpm run build
       shell: bash
