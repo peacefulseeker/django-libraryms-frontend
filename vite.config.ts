@@ -36,20 +36,11 @@ const viteConfig = defineConfig({
   },
   experimental: {
     renderBuiltUrl(filename) {
-      // renderBuiltUrl(filename, { hostId, hostType, type }) {
-      if (process.env.CLOUDFRONT_ASSETS_VERSION) {
-        // if (hostType === 'html') {
-        // filename = filename.replace(/-[a-zA-Z0-9]+\.(js|css)$/, '.$1');
-        //   console.log({ filename, hostId, hostType, type });
-        //   console.log('====');
-        // }
-
-        filename =
-          `https://d1nvb8emsymmvr.cloudfront.net/v/${process.env.CLOUDFRONT_ASSETS_VERSION}/` +
-          filename;
-        return filename;
-      }
-      if (filename.indexOf('/assets/') !== -1) {
+      const assetsVersion = process.env.CLOUDFRONT_ASSETS_VERSION;
+      if (assetsVersion) {
+        // TODO: define CDN host in a template dynamically
+        return `https://d1nvb8emsymmvr.cloudfront.net/v/${assetsVersion}/` + filename;
+      } else if (filename.indexOf('/assets/') !== -1) {
         return '/static/frontend/assets/' + filename.replace(/^assets\//, '');
       }
       return '/static/frontend/' + filename;
