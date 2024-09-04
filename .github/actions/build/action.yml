@@ -25,7 +25,7 @@ runs:
       shell: bash
     - name: Generate version number
       run: |
-        TIMESTAMP=$(date +%Y%m%d%H%M)
+        TIMESTAMP=$(date +%Y%m%d%H%M | rev)
         echo "CLOUDFRONT_ASSETS_VERSION=${TIMESTAMP}_$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       shell: bash
     - name: Build
