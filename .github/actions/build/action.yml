@@ -25,7 +25,7 @@ runs:
       shell: bash
     - name: Generate assets version number
       id: version
-      run: echo "::set-output name=version::$(git rev-parse --short HEAD)"
+      run: echo "version=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       shell: bash
     - name: Build
       run: CLOUDFRONT_ASSETS_VERSION=${{ steps.version.outputs.version }} pnpm run build
