@@ -21,13 +21,32 @@ const viteConfig = defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: 'assets/index.js',
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name === 'index.css') {
+            return 'assets/index.css';
+          }
+          return 'assets/[name].[ext]';
+        },
+      },
+    },
+  },
   experimental: {
     renderBuiltUrl(filename) {
+      // renderBuiltUrl(filename, { hostId, hostType, type }) {
       if (process.env.CLOUDFRONT_ASSETS_VERSION) {
+        // if (hostType === 'html') {
+        // filename = filename.replace(/-[a-zA-Z0-9]+\.(js|css)$/, '.$1');
+        //   console.log({ filename, hostId, hostType, type });
+        //   console.log('====');
+        // }
+
         filename =
           `https://d1nvb8emsymmvr.cloudfront.net/v/${process.env.CLOUDFRONT_ASSETS_VERSION}/` +
           filename;
-        console.log(filename);
         return filename;
       }
       if (filename.indexOf('/assets/') !== -1) {
