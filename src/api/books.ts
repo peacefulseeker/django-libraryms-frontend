@@ -1,13 +1,13 @@
 import axios from '@/axios';
 import type { Book, BookEnqueued, BookInList, BookReserved } from '@/types/books';
 
-type OrderResponse = {
+export type OrderResponse = {
   orderId: number;
   bookId: number;
   detail: string;
 };
 
-type ReservationExtendResponse = {
+export type ReservationExtendResponse = {
   detail: string;
 };
 

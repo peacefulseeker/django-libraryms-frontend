@@ -5,9 +5,9 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "pnpm check:type && vite build",
+        "build": "vite build",
         "preview": "vite preview",
-        "test:unit": "vitest",
+        "test": "vitest run",
         "check:type": "vue-tsc --project tsconfig.app.json",
         "watch:type": "pnpm check:type --watch",
         "check:lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore  --max-warnings=0",

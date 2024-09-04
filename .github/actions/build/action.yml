@@ -1,0 +1,20 @@
+name: 'Setup and build'
+description: 'Sets up node, pnpm, installs dependencies, and builds the project'
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.9.0
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9.9.0
+    - name: Install dependencies
+      run: pnpm install
+      shell: bash
+
+    - name: Build
+      run: pnpm run build
+      shell: bash
