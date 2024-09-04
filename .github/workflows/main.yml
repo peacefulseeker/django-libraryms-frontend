@@ -15,14 +15,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/build
 
   lint-and-type-check:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/build
       - name: Lint
         run: pnpm check:lint
@@ -33,7 +33,7 @@ jobs:
     needs: lint-and-type-check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/build
       - name: Run tests
         run: pnpm test
@@ -42,7 +42,8 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/build
       - name: Authorize AWS
         uses: aws-actions/configure-aws-credentials@v1
         with:
