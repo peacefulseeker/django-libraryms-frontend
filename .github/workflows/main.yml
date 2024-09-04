@@ -10,6 +10,7 @@ on:
 
 jobs:
   generate-assets-version:
+    if: github.ref == 'refs/heads/main' && github.repository_owner == 'peacefulseeker'
     runs-on: ubuntu-latest
     outputs:
       cloudfront_assets_version: ${{ steps.set_version.outputs.cloudfront_assets_version }}
@@ -22,7 +23,8 @@ jobs:
           echo "cloudfront_assets_version=${TIMESTAMP}_${VERSION}" >> $GITHUB_OUTPUT
 
   build:
-    needs: generate-assets-version
+    needs:
+      - ${{ github.ref == 'refs/heads/main' && 'generate-assets-version' || '' }}
     runs-on: ubuntu-latest
     env:
       GEN_ASSETS_OUTPUTS: ${{join(needs.generate-assets-version.outputs.*, '\n')}}
