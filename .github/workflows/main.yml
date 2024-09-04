@@ -52,4 +52,4 @@ jobs:
           aws-region: eu-central-1
       - name: Deploy to S3
         run: |
-          aws s3 sync dist/ s3://django-libraryms/v/{env.CLOUDFRONT_ASSETS_VERSION} --delete --acl public-read
+          aws s3 sync dist/ s3://django-libraryms/v/${{ env.CLOUDFRONT_ASSETS_VERSION }} --delete --acl public-read
