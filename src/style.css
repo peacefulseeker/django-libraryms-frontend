@@ -155,8 +155,3 @@ main {
 .spinner-form {
   @apply absolute h-full w-full;
 }
-
-
-body {
-  background: coral !important;
-}
