@@ -12,50 +12,44 @@ env:
   GITHUB_CONTEXT: ${{ toJson(github) }}
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/build
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 20.9.0
+  lint-and-type-check:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/build
+      - name: Lint
+        run: pnpm check:lint
+      - name: Type check
+        run: pnpm check:type
 
-    - name: Install pnpm
-      uses: pnpm/action-setup@v2
-      with:
-        version: 9.9.0
+  test:
+    needs: lint-and-type-check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/build
+      - name: Run tests
+        run: pnpm test
 
-    - name: Install dependencies
-      run: pnpm install
-
-    - name: Generate version number
-      id: version
-      run: echo "::set-output name=version::$(git rev-parse --short HEAD)"
-
-    - name: build
-      run: CLOUDFRONT_ASSETS_VERSION=${{ steps.version.outputs.version }} pnpm run build
-
-    - name: lint
-      run: pnpm check:lint
-
-    - name: type check
-      run: pnpm check:type
-
-    - name: Run tests
-      run: pnpm test
-
-    - name: Authorize AWS
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: eu-central-1
-
-    - name: Deploy to S3
-      run: |
-        VERSION=${{ steps.version.outputs.version }}
-        aws s3 sync dist/ s3://django-libraryms/v/$VERSION --delete --acl public-read
-        # aws cloudfront create-invalidation --distribution-id YOUR_DISTRIBUTION_ID --paths "/v/$VERSION/*"
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Authorize AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+      - name: Deploy to S3
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          aws s3 sync dist/ s3://django-libraryms/v/$VERSION --delete --acl public-read

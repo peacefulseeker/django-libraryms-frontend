@@ -1,0 +1,32 @@
+name: 'Setup and build'
+description: 'Sets up node, pnpm, installs dependencies, and builds the project'
+inputs:
+  node-version:
+    description: 'Node.js version to use'
+    required: true
+    default: '20.9.0'
+  pnpm-version:
+    description: 'pnpm version to use'
+    required: true
+    default: '9.9.0'
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: ${{ inputs.pnpm-version }}
+    - name: Install dependencies
+      run: pnpm install
+      shell: bash
+    - name: Generate assets version number
+      id: version
+      run: echo "::set-output name=version::$(git rev-parse --short HEAD)"
+      shell: bash
+    - name: Build
+      run: CLOUDFRONT_ASSETS_VERSION=${{ steps.version.outputs.version }} pnpm run build
+      shell: bash
