@@ -52,6 +52,7 @@ jobs:
         run: pnpm test
 
   deploy:
+    if: github.ref == 'refs/heads/main' && github.repository_owner == 'peacefulseeker'
     needs: [generate-assets-version, test]
     runs-on: ubuntu-latest
     env:
