@@ -36,13 +36,13 @@ jobs:
       run: CLOUDFRONT_ASSETS_VERSION=${{ steps.version.outputs.version }} pnpm run build
 
     - name: lint
-      run: pnpm run lint
+      run: pnpm check:lint
 
     - name: type check
-      run: pnpm run type-check
+      run: pnpm check:type
 
     - name: Run tests
-      run: pnpm run test
+      run: pnpm test
 
     - name: Authorize AWS
       if: github.ref == 'refs/heads/main' && github.repository_owner == 'peacefulseeker'
