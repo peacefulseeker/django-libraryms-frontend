@@ -35,7 +35,7 @@ jobs:
       - uses: ./.github/actions/build
 
   lint-and-type-check:
-    needs: build
+    needs: [generate-assets-version, build]
     runs-on: ubuntu-latest
     env:
       CLOUDFRONT_ASSETS_VERSION: ${{ needs.generate-assets-version.outputs.cloudfront_assets_version }}
@@ -48,7 +48,7 @@ jobs:
         run: pnpm check:type
 
   test:
-    needs: lint-and-type-check
+    needs: [generate-assets-version, lint-and-type-check]
     runs-on: ubuntu-latest
     env:
       CLOUDFRONT_ASSETS_VERSION: ${{ needs.generate-assets-version.outputs.cloudfront_assets_version }}
@@ -59,7 +59,7 @@ jobs:
         run: pnpm test
 
   deploy:
-    needs: test
+    needs: [generate-assets-version, test]
     runs-on: ubuntu-latest
     env:
       CLOUDFRONT_ASSETS_VERSION: ${{ needs.generate-assets-version.outputs.cloudfront_assets_version }}
