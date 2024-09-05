@@ -1,18 +1,16 @@
 /// <reference types="vitest" />
 import { fileURLToPath, URL } from 'node:url';
 
-import { defineConfig } from 'vite';
+import { defineConfig, mergeConfig } from 'vite';
 
 import vue from '@vitejs/plugin-vue';
 
-// const dockerPort = 7004;
-const localPort = 7070;
-const viteConfig = defineConfig({
+let config = {
   server: {
     host: true,
     port: 6060,
     proxy: {
-      '/api': `http://127.0.0.1:${localPort}`,
+      '/api': `http://127.0.0.1:${process.env.API_PROXY_PORT}`,
     },
   },
   plugins: [vue()],
@@ -21,31 +19,34 @@ const viteConfig = defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  build: {
-    rollupOptions: {
-      output: {
-        entryFileNames: 'assets/index.js',
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name === 'index.css') {
-            return 'assets/index.css';
-          }
-          return 'assets/[name].[ext]';
+};
+
+if (process.env.VITE_PREVIEW === undefined) {
+  config = mergeConfig(config, {
+    build: {
+      rollupOptions: {
+        output: {
+          entryFileNames: 'assets/index.js',
+          assetFileNames: (assetInfo) => {
+            if (assetInfo.name === 'index.css') {
+              return 'assets/index.css';
+            }
+            return 'assets/[name].[ext]';
+          },
         },
       },
     },
-  },
-  experimental: {
-    renderBuiltUrl(filename) {
-      const assetsVersion = process.env.CLOUDFRONT_ASSETS_VERSION;
-      if (assetsVersion) {
-        // TODO: define CDN host in a template dynamically
-        return `https://d1nvb8emsymmvr.cloudfront.net/v/${assetsVersion}/` + filename;
-      } else if (filename.indexOf('/assets/') !== -1) {
-        return '/static/frontend/assets/' + filename.replace(/^assets\//, '');
-      }
-      return '/static/frontend/' + filename;
+    experimental: {
+      renderBuiltUrl(filename, { hostType }) {
+        if (hostType === 'js') {
+          return { runtime: `window.__toFrontendAssetsUrl(${JSON.stringify(filename)})` }
+        }
+        return {
+          relative: true
+        }
+      },
     },
-  },
-});
+  });
+}
 
-export default viteConfig;
+export default defineConfig(config);

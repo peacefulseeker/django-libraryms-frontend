@@ -43,11 +43,13 @@ jobs:
         run: pnpm test
 
   deploy:
-    if: github.ref == 'refs/heads/main' && github.repository_owner == 'peacefulseeker'
+    # if: github.ref == 'refs/heads/main' && github.repository_owner == 'peacefulseeker'
     needs: [build, test]
     runs-on: ubuntu-latest
     env:
       CLOUDFRONT_ASSETS_VERSION: ${{ needs.build.outputs.cloudfront_assets_version }}
+    outputs:
+      cloudfront_assets_version: ${{ env.CLOUDFRONT_ASSETS_VERSION }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/build
@@ -60,3 +62,20 @@ jobs:
       - name: Deploy to S3
         run: |
           aws s3 sync dist/ s3://django-libraryms/v/${{ env.CLOUDFRONT_ASSETS_VERSION }} --acl public-read
+
+  create-release:
+    needs: deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_NAME="v${{ needs.deploy.outputs.cloudfront_assets_version }}"
+          gh release create $TAG_NAME \
+            --title "Release $TAG_NAME" \
+            --notes "Automated release for version $TAG_NAME" \
+            --target ${{ github.sha }}
