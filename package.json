@@ -4,9 +4,10 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "vite",
+        "dev": "API_PROXY_PORT=7070 vite",
         "build": "vite build",
-        "preview": "vite preview",
+        "preview": "vite preview --open",
+        "preview:build": "VITE_PREVIEW=1 vite build",
         "test": "vitest run",
         "check:type": "vue-tsc --project tsconfig.app.json",
         "watch:type": "pnpm check:type --watch",
